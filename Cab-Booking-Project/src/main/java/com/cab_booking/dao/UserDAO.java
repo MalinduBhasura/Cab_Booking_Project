@@ -14,6 +14,8 @@ import com.cab_booking.util.DatabaseConnection;
 public class UserDAO {
     private Connection connection = DatabaseConnection.getInstance().getConnection();
 
+    
+    
     public boolean authenticateAdmin(Admin admin) {
         String query = "SELECT * FROM admin WHERE username = ? AND password = ?";
         try (PreparedStatement ps = connection.prepareStatement(query)) {

@@ -1,9 +1,5 @@
 package com.cab_booking.controller;
 
-
-
-
-
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,11 +11,8 @@ import com.cab_booking.service.UserService;
 
 @WebServlet("/signup")
 public class SignupServlet extends HttpServlet {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private UserService userService = new UserService();
+    private static final long serialVersionUID = 1L;
+    private UserService userService = new UserService();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -34,15 +27,11 @@ public class SignupServlet extends HttpServlet {
         boolean isRegistered = userService.registerCustomer(customer);
 
         if (isRegistered) {
-            // Set a success message
-            request.setAttribute("successMessage", "Signup successful! Please login.");
-            // Forward back to the signup page
-            request.getRequestDispatcher("signup.jsp").forward(request, response);
+            // Redirect to signup page with a success message
+            response.sendRedirect("signup.jsp?success=true");
         } else {
-            // Set an error message
-            request.setAttribute("errorMessage", "Signup failed. Please try again.");
-            // Forward back to the signup page
-            request.getRequestDispatcher("signup.jsp").forward(request, response);
+            // Redirect to signup page with an error message
+            response.sendRedirect("signup.jsp?error=true");
         }
     }
 }

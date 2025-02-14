@@ -60,4 +60,38 @@ public class Customer {
     public String getPassword() {
         return password;
     }
+
+	public void setUsername(String username2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setName(String name2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setEmail(String email2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setAddress(String address2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setPhone(String phone2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setPassword(String password2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+
+	
 }
