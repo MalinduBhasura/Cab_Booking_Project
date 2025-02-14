@@ -49,6 +49,7 @@ public class CarDAO {
         System.out.println("Fetched " + cars.size() + " cars from the database.");
         return cars;
     }
+    
 
     // Update a car
     public boolean updateCar(Car car) {

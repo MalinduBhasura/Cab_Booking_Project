@@ -20,7 +20,7 @@
                         <h3 class="card-title text-center">Sign Up</h3>
                     </div>
                     <div class="card-body">
-                        <form id="signupForm" action="signup" method="post">
+                        <form id="signupForm" action="signup" method="post" autocomplete="off">
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
                                 <input type="text" class="form-control" id="name" name="name" required autocomplete="off">

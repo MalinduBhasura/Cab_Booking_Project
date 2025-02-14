@@ -50,5 +50,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <a href="car" class="btn btn-primary">Manage Cars</a>
+     <a href="AdminDashboard/driverManage.jsp" class="text-decoration-none">Go to Admin Dashboard</a>
 </body>
 </html>
