@@ -18,7 +18,7 @@
             <input type="hidden" name="existingPhoto" value="<%= car.getCarPhoto() %>">
             <div class="mb-3">
                 <label for="car_brand" class="form-label">Car Brand</label>
-                <input type="text" class="form-control" id="car_brand" name="car_brand" value="<%= car.getModelName() %>" required>
+                <input type="text" class="form-control" id="car_brand" name="car_brand" value="<%= car.getCar_brand() %>" required>
             </div>
             <div class="mb-3">
                 <label for="modelName" class="form-label">Model Name</label>
@@ -36,6 +36,14 @@
                     <option value="booked" <%= car.getStatus().equals("booked") ? "selected" : "" %>>Booked</option>
                 </select>
             </div>
+            <div class="mb-3">
+    <label for="ratePerKm" class="form-label">Rate Per KM</label>
+    <input type="number" class="form-control" id="ratePerKm" name="ratePerKm" value="<%= car.getRatePerKm() %>" step="0.01" required>
+</div>
+<div class="mb-3">
+    <label for="ratePerDay" class="form-label">Rate Per Day</label>
+    <input type="number" class="form-control" id="ratePerDay" name="ratePerDay" value="<%= car.getRatePerDay() %>" step="0.01" required>
+</div>
             <button type="submit" class="btn btn-primary">Update Car</button>
         </form>
     </div>

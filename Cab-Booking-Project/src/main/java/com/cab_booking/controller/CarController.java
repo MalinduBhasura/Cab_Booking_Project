@@ -1,9 +1,7 @@
 package com.cab_booking.controller;
 
-
-
-import com.cab_booking.service.CarService;
 import com.cab_booking.model.Car;
+import com.cab_booking.service.CarService;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -17,20 +15,12 @@ import java.util.UUID;
                  maxFileSize = 1024 * 1024 * 10,      // 10MB
                  maxRequestSize = 1024 * 1024 * 50)   // 50MB
 public class CarController extends HttpServlet {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private CarService carService = new CarService();
+    private CarService carService = new CarService();
     private static final String UPLOAD_DIR = "uploads"; // Directory to store uploaded images
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	
-   
-        
-    	
-    	String action = request.getParameter("action");
+        String action = request.getParameter("action");
 
         if (action == null) {
             // Fetch cars from the database every time
@@ -40,10 +30,8 @@ public class CarController extends HttpServlet {
         } else if (action.equals("edit")) {
             // Edit car
             int carId = Integer.parseInt(request.getParameter("carId"));
-            request.setAttribute("car", carService.getAllCars().stream()
-                    .filter(c -> c.getCarId() == carId)
-                    .findFirst()
-                    .orElse(null));
+            Car car = carService.getCarById(carId);
+            request.setAttribute("car", car);
             request.getRequestDispatcher("carEdit.jsp").forward(request, response);
         } else if (action.equals("delete")) {
             // Delete car
@@ -52,8 +40,6 @@ public class CarController extends HttpServlet {
             response.sendRedirect("car"); // Redirect to the car management page
         }
     }
-    
-    
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -64,6 +50,8 @@ public class CarController extends HttpServlet {
             Car car = new Car();
             car.setCar_brand(request.getParameter("car_brand"));
             car.setModelName(request.getParameter("modelName"));
+            car.setRatePerKm(Double.parseDouble(request.getParameter("ratePerKm")));
+            car.setRatePerDay(Double.parseDouble(request.getParameter("ratePerDay")));
 
             // Handle file upload
             Part filePart = request.getPart("carPhoto");
@@ -84,6 +72,8 @@ public class CarController extends HttpServlet {
             car.setCarId(Integer.parseInt(request.getParameter("carId")));
             car.setCar_brand(request.getParameter("car_brand"));
             car.setModelName(request.getParameter("modelName"));
+            car.setRatePerKm(Double.parseDouble(request.getParameter("ratePerKm")));
+            car.setRatePerDay(Double.parseDouble(request.getParameter("ratePerDay")));
 
             // Handle file upload
             Part filePart = request.getPart("carPhoto");

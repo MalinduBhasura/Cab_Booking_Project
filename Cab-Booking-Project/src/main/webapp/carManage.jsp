@@ -27,7 +27,10 @@
                             <th>Car Model</th>
                             <th>Car Photo</th>
                             <th>Status</th>
+                            <th>Rate Per KM</th>
+                            <th>Rate Per Day</th>
                             <th>Actions</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -38,8 +41,9 @@
                                 <td><%= car.getCar_brand() %></td>
                                 <td><%= car.getModelName() %></td>
                                 <td><img src="<%= car.getCarPhoto() %>" class="img-thumbnail" width="100"></td>
-    <td><%= car.getStatus() %></td>
-
+                                <td><%= car.getStatus() %></td>
+                                <td><%= car.getRatePerKm() %></td>
+                                <td><%= car.getRatePerDay() %></td>
                                 <td>
                                     <a href="car?action=edit&carId=<%= car.getCarId() %>" class="btn btn-warning btn-sm">Edit</a>
                                     <a href="car?action=delete&carId=<%= car.getCarId() %>" class="btn btn-danger btn-sm">Delete</a>

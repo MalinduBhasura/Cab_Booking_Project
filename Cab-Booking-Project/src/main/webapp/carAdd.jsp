@@ -29,6 +29,14 @@
                     <option value="booked">Booked</option>
                 </select>
             </div>
+            <div class="mb-3">
+    <label for="ratePerKm" class="form-label">Rate Per KM</label>
+    <input type="number" class="form-control" id="ratePerKm" name="ratePerKm" step="0.01" required>
+</div>
+<div class="mb-3">
+    <label for="ratePerDay" class="form-label">Rate Per Day</label>
+    <input type="number" class="form-control" id="ratePerDay" name="ratePerDay" step="0.01" required>
+</div>
             <button type="submit" class="btn btn-primary">Add Car</button>
         </form>
     </div>

@@ -34,10 +34,6 @@
         .card:hover {
             transform: scale(1.05);
         }
-        .card-img-top {
-            height: 200px;
-            object-fit: cover;
-        }
     </style>
 </head>
 <body class="bg-light">
@@ -46,15 +42,15 @@
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="card">
-                    <!-- Display the car photo -->
-                    <img src="<%= request.getContextPath() + '/' + carPhoto %>" class="card-img-top" alt="Car Photo">
+                    <!-- Display the car photo with adjusted size -->
+                   <img src="<%= request.getContextPath() + '/' + carPhoto %>" class="card-img-top" style="height: 350px; object-fit: cover;" alt="Car Photo">
+
 
                     <div class="card-body">
                         <!-- Display the car model name -->
-                    
                         <form action="booking" method="post">
                             <input type="hidden" name="carId" value="<%= carId %>">
-                           <h5 class="card-title"><%= car_brand %> - <%= modelName %></h5>
+                            <h5 class="card-title"><%= car_brand %> - <%= modelName %></h5>
                             <input type="hidden" name="carPhoto" value="<%= carPhoto %>">
                             <div class="mb-3">
                                 <label for="customerName" class="form-label">Customer Name</label>
