@@ -17,6 +17,10 @@
             <input type="hidden" name="carId" value="<%= car.getCarId() %>">
             <input type="hidden" name="existingPhoto" value="<%= car.getCarPhoto() %>">
             <div class="mb-3">
+                <label for="car_brand" class="form-label">Car Brand</label>
+                <input type="text" class="form-control" id="car_brand" name="car_brand" value="<%= car.getModelName() %>" required>
+            </div>
+            <div class="mb-3">
                 <label for="modelName" class="form-label">Model Name</label>
                 <input type="text" class="form-control" id="modelName" name="modelName" value="<%= car.getModelName() %>" required>
             </div>

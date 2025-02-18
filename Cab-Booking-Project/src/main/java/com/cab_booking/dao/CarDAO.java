@@ -17,11 +17,12 @@ public class CarDAO {
 
     // Add a new car
     public boolean addCar(Car car) {
-        String sql = "INSERT INTO car (model_name, car_photo, status) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO car (car_brand,model_name, car_photo, status) VALUES (?, ?, ?,?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, car.getModelName());
-            statement.setString(2, car.getCarPhoto());
-            statement.setString(3, car.getStatus());
+        	statement.setString(1, car.getCar_brand());
+        	statement.setString(2, car.getModelName());
+            statement.setString(3, car.getCarPhoto());
+            statement.setString(4, car.getStatus());
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -37,7 +38,9 @@ public class CarDAO {
              ResultSet resultSet = statement.executeQuery(sql)) {
             while (resultSet.next()) {
                 Car car = new Car();
+                
                 car.setCarId(resultSet.getInt("car_id"));
+                car.setCar_brand(resultSet.getString("car_brand"));
                 car.setModelName(resultSet.getString("model_name"));
                 car.setCarPhoto(resultSet.getString("car_photo"));
                 car.setStatus(resultSet.getString("status"));
@@ -53,12 +56,13 @@ public class CarDAO {
 
     // Update a car
     public boolean updateCar(Car car) {
-        String sql = "UPDATE car SET model_name = ?, car_photo = ?, status = ? WHERE car_id = ?";
+        String sql = "UPDATE car SET car_brand = ?, model_name = ?, car_photo = ?, status = ? WHERE car_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, car.getModelName());
-            statement.setString(2, car.getCarPhoto());
-            statement.setString(3, car.getStatus());
-            statement.setInt(4, car.getCarId());
+        	statement.setString(1, car.getCar_brand());
+        	statement.setString(2, car.getModelName());
+            statement.setString(3, car.getCarPhoto());
+            statement.setString(4, car.getStatus());
+            statement.setInt(5, car.getCarId());
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -85,6 +89,7 @@ public class CarDAO {
             while (resultSet.next()) {
                 Car car = new Car();
                 car.setCarId(resultSet.getInt("car_id"));
+                car.setCar_brand(resultSet.getString("car_brand"));
                 car.setModelName(resultSet.getString("model_name"));
                 car.setCarPhoto(resultSet.getString("car_photo"));
                 car.setStatus(resultSet.getString("status"));

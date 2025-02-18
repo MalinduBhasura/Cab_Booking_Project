@@ -11,6 +11,10 @@
         <form action="car" method="post" enctype="multipart/form-data">
             <input type="hidden" name="action" value="add">
             <div class="mb-3">
+                <label for="car_brand" class="form-label">Car Brand</label>
+                <input type="text" class="form-control" id="car_brand" name="car_brand" required>
+            </div>
+            <div class="mb-3">
                 <label for="modelName" class="form-label">Model Name</label>
                 <input type="text" class="form-control" id="modelName" name="modelName" required>
             </div>

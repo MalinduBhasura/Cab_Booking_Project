@@ -62,6 +62,7 @@ public class CarController extends HttpServlet {
         if (action.equals("add")) {
             // Add new car
             Car car = new Car();
+            car.setCar_brand(request.getParameter("car_brand"));
             car.setModelName(request.getParameter("modelName"));
 
             // Handle file upload
@@ -81,6 +82,7 @@ public class CarController extends HttpServlet {
             // Update car
             Car car = new Car();
             car.setCarId(Integer.parseInt(request.getParameter("carId")));
+            car.setCar_brand(request.getParameter("car_brand"));
             car.setModelName(request.getParameter("modelName"));
 
             // Handle file upload

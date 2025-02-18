@@ -7,8 +7,15 @@ public class Car {
     private String modelName;
     private String carPhoto; // Store the file path
     private String status;
+    private String car_brand;
 
-    // Getters and Setters
+    public String getCar_brand() {
+		return car_brand;
+	}
+	public void setCar_brand(String car_brand) {
+		this.car_brand = car_brand;
+	}
+	// Getters and Setters
     public int getCarId() { return carId; }
     public void setCarId(int carId) { this.carId = carId; }
 

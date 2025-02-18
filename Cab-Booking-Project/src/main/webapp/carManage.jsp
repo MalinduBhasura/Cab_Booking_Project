@@ -22,9 +22,10 @@
                 <table class="table table-hover table-striped">
                     <thead class="table-dark">
                         <tr>
-                            <th>ID</th>
-                            <th>Model</th>
-                            <th>Photo</th>
+                            <th>Car ID</th>
+                            <th> Car Brand</th>
+                            <th>Car Model</th>
+                            <th>Car Photo</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -34,6 +35,7 @@
                             <% for (Car car : cars) { %>
                             <tr>
                                 <td><%= car.getCarId() %></td>
+                                <td><%= car.getCar_brand() %></td>
                                 <td><%= car.getModelName() %></td>
                                 <td><img src="<%= car.getCarPhoto() %>" class="img-thumbnail" width="100"></td>
     <td><%= car.getStatus() %></td>
