@@ -3,68 +3,93 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.net.URLEncoder" %>
 <%
-    // Validate the session
- 
- if (session == null || session.getAttribute("user") == null || !"customer".equals(session.getAttribute("userType"))) {
-    response.sendRedirect(request.getContextPath() + "/login.jsp");
-    return;
-}
+    if (session == null || session.getAttribute("user") == null || !"customer".equals(session.getAttribute("userType"))) {
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
+        return;
+    }
     
-    
-List<Car> cars = (List<Car>) request.getAttribute("cars");
+    List<Car> cars = (List<Car>) request.getAttribute("cars");
 %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Customer Dashboard</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        body {
+            background: #f8f9fa;
+        }
+        .navbar {
+            background: #007bff;
+        }
+        .navbar-brand, .nav-link {
+            color: #fff !important;
+        }
         .card {
-            margin-bottom: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 15px;
+            overflow: hidden;
         }
         .card:hover {
             transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
         .card-img-top {
-            height: 200px;
+            height: 220px;
             object-fit: cover;
+        }
+        .card-body {
+            background: linear-gradient(135deg, #ffffff, #e3e3e3);
+            border-radius: 0 0 15px 15px;
         }
     </style>
 </head>
-<body class="bg-light">
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">Cab Booking</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Bookings</a></li>
+                    <li class="nav-item"><a class="nav-link" href="logout.jsp">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="container mt-5">
         <h1 class="text-center mb-4">Available Cars</h1>
         <div class="row">
-            <%
-                if (cars != null && !cars.isEmpty()) {
-                    for (Car car : cars) {
-                        String carPhotoEncoded = URLEncoder.encode(car.getCarPhoto(), "UTF-8");
+            <% if (cars != null && !cars.isEmpty()) {
+                for (Car car : cars) {
+                    String carPhotoEncoded = URLEncoder.encode(car.getCarPhoto(), "UTF-8");
             %>
             <div class="col-md-4 mb-4">
                 <div class="card">
                     <img src="<%= car.getCarPhoto() %>" class="card-img-top" alt="Car Photo">
-                    <div class="card-body">
-                        <h5 class="card-title"><%= car.getModelName() %></h5>
-                        <p class="card-text">Status: <%= car.getStatus() %></p>
-                        <a href="${pageContext.request.contextPath}/CustomerDashboard/bookingForm.jsp?carId=<%= car.getCarId() %>&modelName=<%= car.getModelName() %>&carPhoto=<%= carPhotoEncoded %>" class="btn btn-primary">Book Now</a>
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-primary fw-bold"><%= car.getCar_brand() %> - <%= car.getModelName() %></h5>
+                        <p class="card-text text-muted">Status: <strong><%= car.getStatus() %></strong></p>
+                        <a href="${pageContext.request.contextPath}/CustomerDashboard/bookingForm.jsp?carId=<%= car.getCarId() %>&car_brand=<%= car.getCar_brand() %>&modelName=<%= car.getModelName() %>&carPhoto=<%= carPhotoEncoded %>" class="btn btn-success">Book Now</a>
                     </div>
                 </div>
             </div>
-            <%
-                    }
-                } else {
-            %>
+            <%  }} else { %>
             <div class="col-12">
-                <div class="alert alert-warning" role="alert">
+                <div class="alert alert-warning text-center" role="alert">
                     No cars available at the moment. Please check back later.
                 </div>
             </div>
-            <%
-                }
-            %>
+            <% } %>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

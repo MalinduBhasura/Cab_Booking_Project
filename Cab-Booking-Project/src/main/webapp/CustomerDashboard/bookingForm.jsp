@@ -11,10 +11,12 @@
     // Get car details from the request parameters
     String carId = request.getParameter("carId");
     String modelName = request.getParameter("modelName");
+    String car_brand = request.getParameter("car_brand");
     String carPhoto = request.getParameter("carPhoto");
 
     // Debug logs to verify parameters
     System.out.println("Car ID: " + carId);
+    System.out.println("Car Brand: " + car_brand);
     System.out.println("Model Name: " + modelName);
     System.out.println("Car Photo: " + carPhoto);
 %>
@@ -45,13 +47,14 @@
             <div class="col-md-6 offset-md-3">
                 <div class="card">
                     <!-- Display the car photo -->
-                    <img src="<%= carPhoto %>" class="card-img-top" alt="Car Photo">
+                    <img src="<%= request.getContextPath() + '/' + carPhoto %>" class="card-img-top" alt="Car Photo">
+
                     <div class="card-body">
                         <!-- Display the car model name -->
-                        <h5 class="card-title"><%= modelName %></h5>
+                    
                         <form action="booking" method="post">
                             <input type="hidden" name="carId" value="<%= carId %>">
-                            <input type="hidden" name="modelName" value="<%= modelName %>">
+                           <h5 class="card-title"><%= car_brand %> - <%= modelName %></h5>
                             <input type="hidden" name="carPhoto" value="<%= carPhoto %>">
                             <div class="mb-3">
                                 <label for="customerName" class="form-label">Customer Name</label>
