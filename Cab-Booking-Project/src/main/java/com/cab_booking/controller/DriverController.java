@@ -1,80 +1,82 @@
 package com.cab_booking.controller;
 
-
-
-
-
 import com.cab_booking.model.Driver;
 import com.cab_booking.service.DriverService;
-import com.cab_booking.util.DriverFactory;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
-
-
 
 @WebServlet("/AdminDashboard/driver")
 public class DriverController extends HttpServlet {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	/**
-	 * 
-	 */
-	
-	private DriverService driverService;
+    private static final long serialVersionUID = 1L;
+    private DriverService driverService = new DriverService();
 
     @Override
-    public void init() {
-        // Use the factory to get the DriverService instance
-        driverService = DriverFactory.getDriverService();
-    }
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Disable caching
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+        response.setHeader("Expires", "0"); // Proxies
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
+        // Check if the user is logged in (session check)
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
+
+        String action = request.getParameter("action");
+
+        if (action == null) {
+            // Fetch all drivers from the database
             List<Driver> drivers = driverService.getAllDrivers();
-            req.setAttribute("drivers", drivers);
-            req.getRequestDispatcher("driverManage.jsp").forward(req, resp);
-        } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Drivers fetched: " + drivers); // Debug log
+            request.setAttribute("drivers", drivers);
+            request.getRequestDispatcher("/AdminDashboard/driverManage.jsp").forward(request, response);
+        } else if (action.equals("edit")) {
+            // Edit driver: Fetch driver by ID and forward to edit page
+            int driverId = Integer.parseInt(request.getParameter("driverId"));
+            Driver driver = driverService.getDriverById(driverId);
+            request.setAttribute("driver", driver);
+            request.getRequestDispatcher("/AdminDashboard/editDriver.jsp").forward(request, response);
+        } else if (action.equals("delete")) {
+            // Delete driver: Delete driver by ID and redirect to driver management page
+            int driverId = Integer.parseInt(request.getParameter("driverId"));
+            driverService.deleteDriver(driverId);
+            response.sendRedirect(request.getContextPath() + "/AdminDashboard/driver");
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action = req.getParameter("action");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
 
-        if ("add".equals(action)) {
+        if (action.equals("add")) {
+            // Add new driver
             Driver driver = new Driver();
-            driver.setDriverName(req.getParameter("driverName"));
-            driver.setStatus(req.getParameter("status"));
-            driver.setPhone(req.getParameter("phone"));
-            driver.setAddress(req.getParameter("address"));
-
-            try {
-                driverService.addDriver(driver);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } else if ("edit".equals(action)) {
-            // Handle edit logic
-        } else if ("delete".equals(action)) {
-            int driverId = Integer.parseInt(req.getParameter("driverId"));
-            try {
-                driverService.deleteDriver(driverId);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            driver.setDriverName(request.getParameter("driverName"));
+            driver.setStatus(request.getParameter("status"));
+            driver.setPhone(request.getParameter("phone"));
+            driver.setAddress(request.getParameter("address"));
+            System.out.println("Driver to add: " + driver); // Debug log
+            boolean isAdded = driverService.addDriver(driver);
+            System.out.println("Driver added: " + isAdded); // Debug log
+        } else if (action.equals("update")) {
+            // Update driver
+            Driver driver = new Driver();
+            driver.setDriverId(Integer.parseInt(request.getParameter("driverId")));
+            driver.setDriverName(request.getParameter("driverName"));
+            driver.setStatus(request.getParameter("status"));
+            driver.setPhone(request.getParameter("phone"));
+            driver.setAddress(request.getParameter("address"));
+            System.out.println("Driver to update: " + driver); // Debug log
+            boolean isUpdated = driverService.updateDriver(driver);
+            System.out.println("Driver updated: " + isUpdated); // Debug log
         }
 
-        resp.sendRedirect("driver");
+        // Redirect to driver management page after adding/updating
+        response.sendRedirect(request.getContextPath() + "/AdminDashboard/driver");
     }
 }

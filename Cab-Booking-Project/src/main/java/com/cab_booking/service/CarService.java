@@ -26,4 +26,12 @@ public class CarService {
     public boolean deleteCar(int carId) {
         return carDAO.deleteCar(carId);
     }
+    public List<Car> getAvailableCars() {
+        return carDAO.getAvailableCars();
+    }
+
+	public Car getCarById(int carId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

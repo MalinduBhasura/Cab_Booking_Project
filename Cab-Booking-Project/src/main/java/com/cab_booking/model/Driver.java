@@ -1,9 +1,5 @@
 package com.cab_booking.model;
 
-
-
-
-
 public class Driver {
     private int driverId;
     private String driverName;
@@ -12,19 +8,43 @@ public class Driver {
     private String address;
 
     // Getters and Setters
-    public int getDriverId() { return driverId; }
-    public void setDriverId(int driverId) { this.driverId = driverId; }
+    public int getDriverId() {
+        return driverId;
+    }
 
-    public String getDriverName() { return driverName; }
-    public void setDriverName(String driverName) { this.driverName = driverName; }
+    public void setDriverId(int driverId) {
+        this.driverId = driverId;
+    }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public String getDriverName() {
+        return driverName;
+    }
 
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
+    }
 
-    public String getAddress() { return address; }
-    public void setAddress(String address) { this.address = address; }
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }
-

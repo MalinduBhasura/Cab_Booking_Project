@@ -23,27 +23,27 @@
                         <form id="signupForm" action="signup" method="post" autocomplete="off">
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" required autocomplete="off">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required autocomplete="off">
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" required autocomplete="off">
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required autocomplete="off">
                             </div>
                             <div class="mb-3">
                                 <label for="address" class="form-label">Address</label>
-                                <input type="text" class="form-control" id="address" name="address" required autocomplete="off">
+                                <input type="text" class="form-control" id="address" name="address" placeholder="Enter your address" required autocomplete="off">
                             </div>
                             <div class="mb-3">
                                 <label for="phone" class="form-label">Phone</label>
-                                <input type="text" class="form-control" id="phone" name="phone" required autocomplete="off">
+                                <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter your phone number" required autocomplete="off">
                             </div>
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="username" name="username" required autocomplete="off">
+                                <input type="text" class="form-control" id="username" name="username" placeholder="Choose a username" required autocomplete="off">
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" required autocomplete="off">
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Choose a password" required autocomplete="off">
                             </div>
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary">Sign Up</button>

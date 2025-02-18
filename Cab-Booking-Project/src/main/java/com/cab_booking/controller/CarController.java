@@ -26,6 +26,10 @@ public class CarController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	
+   
+        
+    	
     	String action = request.getParameter("action");
 
         if (action == null) {
@@ -48,6 +52,8 @@ public class CarController extends HttpServlet {
             response.sendRedirect("car"); // Redirect to the car management page
         }
     }
+    
+    
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

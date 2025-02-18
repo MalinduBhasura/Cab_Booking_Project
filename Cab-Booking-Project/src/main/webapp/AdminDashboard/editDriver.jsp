@@ -1,46 +1,41 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.cab_booking.model.Driver" %>
+<%
+    Driver driver = (Driver) request.getAttribute("driver");
+%>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Edit Driver</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="bg-light">
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">Edit Driver</h1>
-        <%
-            Driver driver = (Driver) request.getAttribute("driver");
-            if (driver != null) {
-        %>
-        <form action="${pageContext.request.contextPath}/AdminDashboard/driver" method="post" class="card p-4">
-            <input type="hidden" name="action" value="edit">
+<body>
+    <div class="container">
+        <h1>Edit Driver</h1>
+        <form action="${pageContext.request.contextPath}/AdminDashboard/driver" method="post">
+            <input type="hidden" name="action" value="update">
             <input type="hidden" name="driverId" value="<%= driver.getDriverId() %>">
             <div class="mb-3">
-                <label for="driverName" class="form-label">Name</label>
-                <input type="text" id="driverName" name="driverName" value="<%= driver.getDriverName() %>" class="form-control" required>
+                <label for="driverName" class="form-label">Driver Name</label>
+                <input type="text" class="form-control" id="driverName" name="driverName" value="<%= driver.getDriverName() %>" required>
             </div>
             <div class="mb-3">
                 <label for="status" class="form-label">Status</label>
-                <select id="status" name="status" class="form-select" required>
-                    <option value="available" <%= "available".equals(driver.getStatus()) ? "selected" : "" %>>Available</option>
-                    <option value="booked" <%= "booked".equals(driver.getStatus()) ? "selected" : "" %>>Booked</option>
+                <select class="form-control" id="status" name="status" required>
+                    <option value="available" <%= driver.getStatus().equals("available") ? "selected" : "" %>>Available</option>
+                    <option value="booked" <%= driver.getStatus().equals("booked") ? "selected" : "" %>>Booked</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label for="phone" class="form-label">Phone</label>
-                <input type="text" id="phone" name="phone" value="<%= driver.getPhone() %>" class="form-control">
+                <input type="text" class="form-control" id="phone" name="phone" value="<%= driver.getPhone() %>" required>
             </div>
             <div class="mb-3">
                 <label for="address" class="form-label">Address</label>
-                <input type="text" id="address" name="address" value="<%= driver.getAddress() %>" class="form-control">
+                <input type="text" class="form-control" id="address" name="address" value="<%= driver.getAddress() %>" required>
             </div>
             <button type="submit" class="btn btn-primary">Update Driver</button>
         </form>
-        <%
-            }
-        %>
-        <a href="${pageContext.request.contextPath}/AdminDashboard/driverManage.jsp" class="btn btn-secondary mt-3">Back to Manage</a>
     </div>
 </body>
 </html>

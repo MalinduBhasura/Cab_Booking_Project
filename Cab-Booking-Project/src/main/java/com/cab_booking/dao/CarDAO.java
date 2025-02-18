@@ -77,4 +77,23 @@ public class CarDAO {
             return false;
         }
     }
+    public List<Car> getAvailableCars() {
+        List<Car> cars = new ArrayList<>();
+        String sql = "SELECT * FROM car WHERE status = 'available'";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+            while (resultSet.next()) {
+                Car car = new Car();
+                car.setCarId(resultSet.getInt("car_id"));
+                car.setModelName(resultSet.getString("model_name"));
+                car.setCarPhoto(resultSet.getString("car_photo"));
+                car.setStatus(resultSet.getString("status"));
+                cars.add(car);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Fetched " + cars.size() + " available cars from the database."); // Debug log
+        return cars;
+    }
 }
