@@ -1,41 +1,32 @@
 package com.cab_booking.model;
 
-import java.sql.Date;
-
-public class Booking {
+public class BookingBill {
+    private int billId;
     private int bookingId;
-    private int customerId;
     private int carId;
-    private int driverId;
     private String startDate;
     private String endDate;
-    private String bookingType;
-    private int estimatedKm;
-    private int totalDays;
     private double fare;
+    private int distanceTravelled;
+    private int totalDays;
+    private double totalAmount;
+	public int getBillId() {
+		return billId;
+	}
+	public void setBillId(int billId) {
+		this.billId = billId;
+	}
 	public int getBookingId() {
 		return bookingId;
 	}
 	public void setBookingId(int bookingId) {
 		this.bookingId = bookingId;
 	}
-	public int getCustomerId() {
-		return customerId;
-	}
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
-	}
 	public int getCarId() {
 		return carId;
 	}
 	public void setCarId(int carId) {
 		this.carId = carId;
-	}
-	public int getDriverId() {
-		return driverId;
-	}
-	public void setDriverId(int driverId) {
-		this.driverId = driverId;
 	}
 	public String getStartDate() {
 		return startDate;
@@ -49,17 +40,17 @@ public class Booking {
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
-	public String getBookingType() {
-		return bookingType;
+	public double getFare() {
+		return fare;
 	}
-	public void setBookingType(String bookingType) {
-		this.bookingType = bookingType;
+	public void setFare(double fare) {
+		this.fare = fare;
 	}
-	public int getEstimatedKm() {
-		return estimatedKm;
+	public int getDistanceTravelled() {
+		return distanceTravelled;
 	}
-	public void setEstimatedKm(int estimatedKm) {
-		this.estimatedKm = estimatedKm;
+	public void setDistanceTravelled(int distanceTravelled) {
+		this.distanceTravelled = distanceTravelled;
 	}
 	public int getTotalDays() {
 		return totalDays;
@@ -67,11 +58,11 @@ public class Booking {
 	public void setTotalDays(int totalDays) {
 		this.totalDays = totalDays;
 	}
-	public double getFare() {
-		return fare;
+	public double getTotalAmount() {
+		return totalAmount;
 	}
-	public void setFare(double fare) {
-		this.fare = fare;
+	public void setTotalAmount(double totalAmount) {
+		this.totalAmount = totalAmount;
 	}
 
     // Getters and Setters

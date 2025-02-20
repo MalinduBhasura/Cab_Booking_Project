@@ -1,83 +1,48 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="javax.servlet.http.HttpSession" %>
-<%@ page import="com.cab_booking.model.Customer" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="com.cab_booking.model.Car" %>
+<%@ page import="com.cab_booking.model.Driver" %>
+<%@ page import="com.cab_booking.dao.CarDAO" %>
+<%@ page import="com.cab_booking.dao.DriverDAO" %>
 <%
-    // Validate the session
-    if (session == null || session.getAttribute("user") == null || !"customer".equals(session.getAttribute("userType"))) {
-        response.sendRedirect(request.getContextPath() + "/login.jsp");
-        return; // Stop further execution of the JSP
-    }
+    CarDAO carDAO = new CarDAO();
+    List<Car> cars = carDAO.getAllCars();
 
-    // Get car details from the request parameters
-    String carId = request.getParameter("carId");
-    String modelName = request.getParameter("modelName");
-    String car_brand = request.getParameter("car_brand");
-    String carPhoto = request.getParameter("carPhoto");
-
-    // Debug logs to verify parameters
-    System.out.println("Car ID: " + carId);
-    System.out.println("Car Brand: " + car_brand);
-    System.out.println("Model Name: " + modelName);
-    System.out.println("Car Photo: " + carPhoto);
+    DriverDAO driverDAO = new DriverDAO();
+    List<Driver> drivers = driverDAO.getAllDrivers();
 %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Booking Form</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .card {
-            margin-bottom: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
-        }
-        .card:hover {
-            transform: scale(1.05);
-        }
-    </style>
 </head>
-<body class="bg-light">
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">Booking Form</h1>
-        <div class="row">
-            <div class="col-md-6 offset-md-3">
-                <div class="card">
-                    <!-- Display the car photo with adjusted size -->
-                   <img src="<%= request.getContextPath() + '/' + carPhoto %>" class="card-img-top" style="height: 350px; object-fit: cover;" alt="Car Photo">
-
-
-                    <div class="card-body">
-                        <!-- Display the car model name -->
-                        <form action="booking" method="post">
-                            <input type="hidden" name="carId" value="<%= carId %>">
-                            <h5 class="card-title"><%= car_brand %> - <%= modelName %></h5>
-                            <input type="hidden" name="carPhoto" value="<%= carPhoto %>">
-                            <div class="mb-3">
-                                <label for="customerName" class="form-label">Customer Name</label>
-                                <input type="text" class="form-control" id="customerName" name="customerName" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="address" class="form-label">Address</label>
-                                <input type="text" class="form-control" id="address" name="address" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="mobileNumber" class="form-label">Mobile Number</label>
-                                <input type="text" class="form-control" id="mobileNumber" name="mobileNumber" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="days" class="form-label">Number of Days</label>
-                                <input type="number" class="form-control" id="days" name="days" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="km" class="form-label">Total Kilometers</label>
-                                <input type="number" class="form-control" id="km" name="km" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Submit Booking</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<body>
+    <h1>Booking Form</h1>
+    <form action="booking" method="post">
+        Customer ID: <input type="text" name="customer_id" required><br>
+        Car: 
+        <select name="car_id" required>
+            <% for (Car car : cars) { %>
+                <option value="<%= car.getCarId() %>"><%= car.getCarName() %> - <%= car.getNumberPlate() %></option>
+            <% } %>
+        </select><br>
+        Driver: 
+        <select name="driver_id" required>
+            <% for (Driver driver : drivers) { %>
+                <option value="<%= driver.getDriverId() %>"><%= driver.getDriverName() %></option>
+            <% } %>
+        </select><br>
+        Start Date: <input type="date" name="start_date" required><br>
+        End Date: <input type="date" name="end_date" required><br>
+        Booking Type: 
+        <select name="booking_type" required>
+            <option value="per_km">Per KM</option>
+            <option value="per_day">Per Day</option>
+        </select><br>
+        Estimated KM: <input type="text" name="estimated_km"><br>
+        Total Days: <input type="text" name="total_days"><br>
+        Fare: <input type="text" name="fare" required><br>
+        <input type="submit" value="Submit">
+    </form>
 </body>
 </html>

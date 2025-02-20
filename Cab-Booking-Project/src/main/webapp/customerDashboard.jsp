@@ -7,7 +7,7 @@
         response.sendRedirect(request.getContextPath() + "/login.jsp");
         return;
     }
-    
+
     List<Car> cars = (List<Car>) request.getAttribute("cars");
 %>
 <!DOCTYPE html>
@@ -74,9 +74,15 @@
                 <div class="card">
                     <img src="<%= car.getCarPhoto() %>" class="card-img-top" alt="Car Photo">
                     <div class="card-body text-center">
-                        <h5 class="card-title text-primary fw-bold"><%= car.getCar_brand() %> - <%= car.getModelName() %></h5>
-                        <p class="card-text text-muted">Status: <strong><%= car.getStatus() %></strong></p>
-                        <a href="${pageContext.request.contextPath}/CustomerDashboard/bookingForm.jsp?carId=<%= car.getCarId() %>&car_brand=<%= car.getCar_brand() %>&modelName=<%= car.getModelName() %>&carPhoto=<%= carPhotoEncoded %>" class="btn btn-success">Book Now</a>
+                        <h5 class="card-title text-primary fw-bold"><%= car.getCarName() %> - <%= car.getNumberPlate() %></h5>
+                        <p class="card-text text-muted">
+                            AC Fare (Per Km): <strong><%= car.getAcFarePerKm() %></strong><br>
+                            Non-AC Fare (Per Km): <strong><%= car.getNonAcFarePerKm() %></strong><br>
+                            AC Fare (Per Day): <strong><%= car.getAcFarePerDay() %></strong><br>
+                            Non-AC Fare (Per Day): <strong><%= car.getNonAcFarePerDay() %></strong><br>
+                            Status: <strong><%= car.getStatus() %></strong>
+                        </p>
+                        <a href="${pageContext.request.contextPath}/CustomerDashboard/bookingForm.jsp?carId=<%= car.getCarId() %>&carName=<%= URLEncoder.encode(car.getCarName(), "UTF-8") %>&numberPlate=<%= URLEncoder.encode(car.getNumberPlate(), "UTF-8") %>&carPhoto=<%= carPhotoEncoded %>" class="btn btn-success">Book Now</a>
                     </div>
                 </div>
             </div>

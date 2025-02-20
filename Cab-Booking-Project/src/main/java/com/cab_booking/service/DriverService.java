@@ -22,6 +22,11 @@ public class DriverService {
         return driverDAO.getAllDrivers();
     }
 
+    public List<Driver> getAvailableDrivers() {
+        // Fetch drivers from the DAO
+        return driverDAO.getAvailableDrivers();  // Ensure this isn't null
+    
+    }
     // Update a driver
     public boolean updateDriver(Driver driver) {
         return driverDAO.updateDriver(driver);

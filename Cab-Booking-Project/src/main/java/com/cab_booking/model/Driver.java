@@ -47,4 +47,14 @@ public class Driver {
     public void setAddress(String address) {
         this.address = address;
     }
+
+	public double getChargePerDay() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public double getChargePerKm() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

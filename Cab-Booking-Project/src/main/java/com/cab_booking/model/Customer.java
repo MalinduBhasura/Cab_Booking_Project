@@ -90,6 +90,10 @@ public class Customer {
 		// TODO Auto-generated method stub
 		
 	}
+	public void setCustomerId(String customerId) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	
 

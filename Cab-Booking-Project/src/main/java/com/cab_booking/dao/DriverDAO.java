@@ -97,4 +97,21 @@ public class DriverDAO {
             return false;
         }
     }
+    public List<Driver> getAvailableDrivers() {
+        List<Driver> drivers = new ArrayList<>();
+        String sql = "SELECT * FROM driver WHERE status = 'available'";  // Ensure status matches your database
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+            while (resultSet.next()) {
+                Driver driver = new Driver();
+                driver.setDriverId(resultSet.getInt("driver_id"));
+                driver.setDriverName(resultSet.getString("driver_name"));
+                driver.setStatus(resultSet.getString("status"));
+                drivers.add(driver);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return drivers;
+    }
 }

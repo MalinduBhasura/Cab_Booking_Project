@@ -2,43 +2,28 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Add Car</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1>Add New Car</h1>
-        <form action="car" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="action" value="add">
-            <div class="mb-3">
-                <label for="car_brand" class="form-label">Car Brand</label>
-                <input type="text" class="form-control" id="car_brand" name="car_brand" required>
-            </div>
-            <div class="mb-3">
-                <label for="modelName" class="form-label">Model Name</label>
-                <input type="text" class="form-control" id="modelName" name="modelName" required>
-            </div>
-            <div class="mb-3">
-                <label for="carPhoto" class="form-label">Car Photo</label>
-                <input type="file" class="form-control" id="carPhoto" name="carPhoto" accept="image/*" required>
-            </div>
-            <div class="mb-3">
-                <label for="status" class="form-label">Status</label>
-                <select class="form-control" id="status" name="status" required>
-                    <option value="available">Available</option>
-                    <option value="booked">Booked</option>
-                </select>
-            </div>
-            <div class="mb-3">
-    <label for="ratePerKm" class="form-label">Rate Per KM</label>
-    <input type="number" class="form-control" id="ratePerKm" name="ratePerKm" step="0.01" required>
-</div>
-<div class="mb-3">
-    <label for="ratePerDay" class="form-label">Rate Per Day</label>
-    <input type="number" class="form-control" id="ratePerDay" name="ratePerDay" step="0.01" required>
-</div>
-            <button type="submit" class="btn btn-primary">Add Car</button>
-        </form>
-    </div>
+    <h1>Add Car</h1>
+    <form action="car" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="action" value="add">
+        Car Name: <input type="text" name="carName" required><br>
+        Number Plate: <input type="text" name="numberPlate" required><br>
+        AC Fare Per Km: <input type="number" step="0.01" name="acFarePerKm" required><br>
+        Non-AC Fare Per Km: <input type="number" step="0.01" name="nonAcFarePerKm" required><br>
+        AC Fare Per Day: <input type="number" step="0.01" name="acFarePerDay" required><br>
+        Non-AC Fare Per Day: <input type="number" step="0.01" name="nonAcFarePerDay" required><br>
+        Car Photo: <input type="file" name="carPhoto" required><br>
+        Status: 
+        <select name="status" required>
+            <option value="available">Available</option>
+            <option value="booked">Booked</option>
+        </select><br>
+        <button type="submit">Submit</button>
+    </form>
+    <br>
+    <a href="car"><button>Back to Car Management</button></a>
 </body>
 </html>

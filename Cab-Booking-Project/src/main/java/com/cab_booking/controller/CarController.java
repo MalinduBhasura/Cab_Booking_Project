@@ -1,107 +1,144 @@
 package com.cab_booking.controller;
 
-import com.cab_booking.model.Car;
-import com.cab_booking.service.CarService;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+//CarController.java
+//CarController.java
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+
+import com.cab_booking.model.Car;
+import com.cab_booking.service.CarService;
 
 @WebServlet("/car")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-                 maxFileSize = 1024 * 1024 * 10,      // 10MB
-                 maxRequestSize = 1024 * 1024 * 50)   // 50MB
+              maxFileSize = 1024 * 1024 * 10,      // 10MB
+              maxRequestSize = 1024 * 1024 * 50)   // 50MB
 public class CarController extends HttpServlet {
-    private CarService carService = new CarService();
-    private static final String UPLOAD_DIR = "uploads"; // Directory to store uploaded images
+ /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+private CarService carService;
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
+ public CarController() {
+     this.carService = new CarService();
+ }
 
-        if (action == null) {
-            // Fetch cars from the database every time
-            List<Car> cars = carService.getAllCars();
-            request.setAttribute("cars", cars); // Set the cars list as a request attribute
-            request.getRequestDispatcher("carManage.jsp").forward(request, response);
-        } else if (action.equals("edit")) {
-            // Edit car
-            int carId = Integer.parseInt(request.getParameter("carId"));
-            Car car = carService.getCarById(carId);
-            request.setAttribute("car", car);
-            request.getRequestDispatcher("carEdit.jsp").forward(request, response);
-        } else if (action.equals("delete")) {
-            // Delete car
-            int carId = Integer.parseInt(request.getParameter("carId"));
-            carService.deleteCar(carId);
-            response.sendRedirect("car"); // Redirect to the car management page
-        }
-    }
+ @Override
+ protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+     String action = req.getParameter("action");
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
+     if ("edit".equals(action)) {
+         int carId = Integer.parseInt(req.getParameter("carId"));
+         try {
+             Car car = carService.getCarById(carId);
+             req.setAttribute("car", car);
+             req.getRequestDispatcher("editCar.jsp").forward(req, resp);
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+     } else {
+         try {
+             List<Car> cars = carService.getAllCars();
+             req.setAttribute("cars", cars);
+             req.getRequestDispatcher("carManage.jsp").forward(req, resp);
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+     }
+ }
 
-        if (action.equals("add")) {
-            // Add new car
-            Car car = new Car();
-            car.setCar_brand(request.getParameter("car_brand"));
-            car.setModelName(request.getParameter("modelName"));
-            car.setRatePerKm(Double.parseDouble(request.getParameter("ratePerKm")));
-            car.setRatePerDay(Double.parseDouble(request.getParameter("ratePerDay")));
+ @Override
+ protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+     String action = req.getParameter("action");
 
-            // Handle file upload
-            Part filePart = request.getPart("carPhoto");
-            String fileName = UUID.randomUUID().toString() + "_" + extractFileName(filePart);
-            String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIR;
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdir();
-            }
-            filePart.write(uploadPath + File.separator + fileName);
+     if ("add".equals(action)) {
+         // Handle file upload
+         Part filePart = req.getPart("carPhoto");
+         String fileName = UUID.randomUUID().toString() + "_" + extractFileName(filePart);
+         String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
+         File uploadDir = new File(uploadPath);
+         if (!uploadDir.exists()) {
+             uploadDir.mkdir();
+         }
+         String filePath = uploadPath + File.separator + fileName;
+         filePart.write(filePath);
 
-            car.setCarPhoto(UPLOAD_DIR + File.separator + fileName);
-            car.setStatus(request.getParameter("status"));
-            carService.addCar(car);
-        } else if (action.equals("update")) {
-            // Update car
-            Car car = new Car();
-            car.setCarId(Integer.parseInt(request.getParameter("carId")));
-            car.setCar_brand(request.getParameter("car_brand"));
-            car.setModelName(request.getParameter("modelName"));
-            car.setRatePerKm(Double.parseDouble(request.getParameter("ratePerKm")));
-            car.setRatePerDay(Double.parseDouble(request.getParameter("ratePerDay")));
+         // Create Car object
+         Car car = new Car();
+         car.setCarName(req.getParameter("carName"));
+         car.setNumberPlate(req.getParameter("numberPlate"));
+         car.setAcFarePerKm(Double.parseDouble(req.getParameter("acFarePerKm")));
+         car.setNonAcFarePerKm(Double.parseDouble(req.getParameter("nonAcFarePerKm")));
+         car.setAcFarePerDay(Double.parseDouble(req.getParameter("acFarePerDay")));
+         car.setNonAcFarePerDay(Double.parseDouble(req.getParameter("nonAcFarePerDay")));
+         car.setCarPhoto("uploads/" + fileName); // Store relative path
+         car.setStatus(req.getParameter("status"));
 
-            // Handle file upload
-            Part filePart = request.getPart("carPhoto");
-            if (filePart.getSize() > 0) { // If a new file is uploaded
-                String fileName = UUID.randomUUID().toString() + "_" + extractFileName(filePart);
-                String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIR;
-                filePart.write(uploadPath + File.separator + fileName);
-                car.setCarPhoto(UPLOAD_DIR + File.separator + fileName);
-            } else { // If no new file is uploaded, keep the existing photo
-                car.setCarPhoto(request.getParameter("existingPhoto"));
-            }
+         try {
+             carService.addCar(car);
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+     } else if ("delete".equals(action)) {
+         int carId = Integer.parseInt(req.getParameter("carId"));
+         try {
+             carService.deleteCar(carId);
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+     } else if ("update".equals(action)) {
+         // Handle file upload
+         Part filePart = req.getPart("carPhoto");
+         String fileName = UUID.randomUUID().toString() + "_" + extractFileName(filePart);
+         String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads";
+         File uploadDir = new File(uploadPath);
+         if (!uploadDir.exists()) {
+             uploadDir.mkdir();
+         }
+         String filePath = uploadPath + File.separator + fileName;
+         filePart.write(filePath);
 
-            car.setStatus(request.getParameter("status"));
-            carService.updateCar(car);
-        }
+         // Create Car object
+         Car car = new Car();
+         car.setCarId(Integer.parseInt(req.getParameter("carId")));
+         car.setCarName(req.getParameter("carName"));
+         car.setNumberPlate(req.getParameter("numberPlate"));
+         car.setAcFarePerKm(Double.parseDouble(req.getParameter("acFarePerKm")));
+         car.setNonAcFarePerKm(Double.parseDouble(req.getParameter("nonAcFarePerKm")));
+         car.setAcFarePerDay(Double.parseDouble(req.getParameter("acFarePerDay")));
+         car.setNonAcFarePerDay(Double.parseDouble(req.getParameter("nonAcFarePerDay")));
+         car.setCarPhoto("uploads/" + fileName); // Store relative path
+         car.setStatus(req.getParameter("status"));
 
-        response.sendRedirect("car");
-    }
+         try {
+             carService.updateCar(car);
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+     }
 
-    // Extract file name from part
-    private String extractFileName(Part part) {
-        String contentDisp = part.getHeader("content-disposition");
-        String[] items = contentDisp.split(";");
-        for (String s : items) {
-            if (s.trim().startsWith("filename")) {
-                return s.substring(s.indexOf("=") + 2, s.length() - 1);
-            }
-        }
-        return "";
-    }
+     resp.sendRedirect("car");
+ }
+
+ // Extract file name from part
+ private String extractFileName(Part part) {
+     String contentDisp = part.getHeader("content-disposition");
+     String[] items = contentDisp.split(";");
+     for (String s : items) {
+         if (s.trim().startsWith("filename")) {
+             return s.substring(s.indexOf("=") + 2, s.length() - 1);
+         }
+     }
+     return "";
+ }
 }

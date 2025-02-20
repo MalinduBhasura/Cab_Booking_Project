@@ -4,33 +4,37 @@ import com.cab_booking.dao.CarDAO;
 import com.cab_booking.model.Car;
 import java.util.List;
 
-public class CarService {
-    private CarDAO carDAO = new CarDAO();
+import java.sql.SQLException;
 
-    public boolean addCar(Car car) {
-        return carDAO.addCar(car);
+
+public class CarService {
+    private CarDAO carDAO;
+
+    public CarService() {
+        this.carDAO = new CarDAO();
     }
 
-    public List<Car> getAllCars() {
+    public void addCar(Car car) throws SQLException {
+        carDAO.addCar(car);
+    }
+
+    public List<Car> getAllCars() throws SQLException {
         return carDAO.getAllCars();
     }
 
-    public boolean updateCar(Car car) {
-        return carDAO.updateCar(car);
+    public void deleteCar(int carId) throws SQLException {
+        carDAO.deleteCar(carId);
     }
 
-    public boolean deleteCar(int carId) {
-        return carDAO.deleteCar(carId);
+    public void updateCar(Car car) throws SQLException {
+        carDAO.updateCar(car);
     }
 
+    public Car getCarById(int carId) throws SQLException {
+        return carDAO.getCarById(carId);
+    }
+ // Get available cars
     public List<Car> getAvailableCars() {
         return carDAO.getAvailableCars();
-    }
-
-    public Car getCarById(int carId) {
-        return carDAO.getAllCars().stream()
-                .filter(c -> c.getCarId() == carId)
-                .findFirst()
-                .orElse(null);
     }
 }

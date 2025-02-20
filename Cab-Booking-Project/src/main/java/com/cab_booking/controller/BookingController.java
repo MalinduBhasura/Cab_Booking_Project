@@ -1,11 +1,15 @@
 package com.cab_booking.controller;
 
-import com.cab_booking.model.Booking;
-import com.cab_booking.service.BookingService;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
 import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.cab_booking.model.Booking;
+import com.cab_booking.model.BookingBill;
+import com.cab_booking.service.BookingService;
 
 @WebServlet("/booking")
 public class BookingController extends HttpServlet {
@@ -13,31 +17,41 @@ public class BookingController extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private BookingService bookingService = new BookingService();
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Get booking details from the form
-        int carId = Integer.parseInt(request.getParameter("carId"));
-        String customerName = request.getParameter("customerName");
-        String address = request.getParameter("address");
-        String mobileNumber = request.getParameter("mobileNumber");
-        int days = Integer.parseInt(request.getParameter("days"));
-        int km = Integer.parseInt(request.getParameter("km"));
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int customerId = Integer.parseInt(request.getParameter("customer_id"));
+        int carId = Integer.parseInt(request.getParameter("car_id"));
+        int driverId = Integer.parseInt(request.getParameter("driver_id"));
+        String startDate = request.getParameter("start_date");
+        String endDate = request.getParameter("end_date");
+        String bookingType = request.getParameter("booking_type");
+        int estimatedKm = Integer.parseInt(request.getParameter("estimated_km"));
+        int totalDays = Integer.parseInt(request.getParameter("total_days"));
+        double fare = Double.parseDouble(request.getParameter("fare"));
 
-        // Create a Booking object
         Booking booking = new Booking();
+        booking.setCustomerId(customerId);
         booking.setCarId(carId);
-        booking.setCustomerName(customerName);
-        booking.setAddress(address);
-        booking.setMobileNumber(mobileNumber);
-        booking.setDays(days);
-        booking.setKm(km);
+        booking.setDriverId(driverId);
+        booking.setStartDate(startDate);
+        booking.setEndDate(endDate);
+        booking.setBookingType(bookingType);
+        booking.setEstimatedKm(estimatedKm);
+        booking.setTotalDays(totalDays);
+        booking.setFare(fare);
 
-        // Save the booking
-        bookingService.addBooking(booking);
+        BookingBill bill = new BookingBill();
+        bill.setCarId(carId);
+        bill.setStartDate(startDate);
+        bill.setEndDate(endDate);
+        bill.setFare(fare);
+        bill.setDistanceTravelled(estimatedKm);
+        bill.setTotalDays(totalDays);
+        bill.setTotalAmount(fare * (bookingType.equals("per_km") ? estimatedKm : totalDays));
 
-        // Redirect to a confirmation page or back to the dashboard
-        response.sendRedirect(request.getContextPath() + "/CustomerDashboard/bookingConfirmation.jsp");
+        BookingService bookingService = new BookingService();
+        bookingService.createBooking(booking, bill);
+
+        response.sendRedirect("bookingDetails.jsp");
     }
 }
