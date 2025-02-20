@@ -1,18 +1,20 @@
 package com.cab_booking.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Booking {
     private int bookingId;
     private int customerId;
     private int carId;
     private int driverId;
-    private String startDate;
-    private String endDate;
+    private Date startDate;
+    private Date endDate;
+    private String carType;
+    private double fare;
     private String bookingType;
     private int estimatedKm;
     private int totalDays;
-    private double fare;
+    private double totalAmount;
 	public int getBookingId() {
 		return bookingId;
 	}
@@ -37,17 +39,29 @@ public class Booking {
 	public void setDriverId(int driverId) {
 		this.driverId = driverId;
 	}
-	public String getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(String startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
-	public String getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(String endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+	public String getCarType() {
+		return carType;
+	}
+	public void setCarType(String carType) {
+		this.carType = carType;
+	}
+	public double getFare() {
+		return fare;
+	}
+	public void setFare(double fare) {
+		this.fare = fare;
 	}
 	public String getBookingType() {
 		return bookingType;
@@ -67,11 +81,11 @@ public class Booking {
 	public void setTotalDays(int totalDays) {
 		this.totalDays = totalDays;
 	}
-	public double getFare() {
-		return fare;
+	public double getTotalAmount() {
+		return totalAmount;
 	}
-	public void setFare(double fare) {
-		this.fare = fare;
+	public void setTotalAmount(double totalAmount) {
+		this.totalAmount = totalAmount;
 	}
 
     // Getters and Setters

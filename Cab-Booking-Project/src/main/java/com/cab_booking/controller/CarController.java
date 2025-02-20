@@ -42,7 +42,7 @@ private CarService carService;
          try {
              Car car = carService.getCarById(carId);
              req.setAttribute("car", car);
-             req.getRequestDispatcher("editCar.jsp").forward(req, resp);
+             req.getRequestDispatcher("carEdit.jsp").forward(req, resp);
          } catch (SQLException e) {
              e.printStackTrace();
          }

@@ -17,7 +17,7 @@ public class LoginServlet extends HttpServlet {
     private UserService userService = new UserService();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	String username = request.getParameter("username");
+        String username = request.getParameter("username");
         String password = request.getParameter("password");
 
         // Check if it's an admin
@@ -39,6 +39,7 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", authenticatedCustomer);
                 session.setAttribute("userType", "customer"); // Set user type as customer
+                session.setAttribute("customerId", authenticatedCustomer.getCustomerId()); // Add customerId to session
                 response.sendRedirect(request.getContextPath() + "/customerDashboard"); // Redirect to CustomerDashboardController
             } else {
                 // Redirect back to the login page with an error message

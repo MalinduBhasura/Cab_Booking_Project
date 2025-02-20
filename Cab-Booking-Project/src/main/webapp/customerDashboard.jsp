@@ -82,7 +82,7 @@
                             Non-AC Fare (Per Day): <strong><%= car.getNonAcFarePerDay() %></strong><br>
                             Status: <strong><%= car.getStatus() %></strong>
                         </p>
-                        <a href="${pageContext.request.contextPath}/CustomerDashboard/bookingForm.jsp?carId=<%= car.getCarId() %>&carName=<%= URLEncoder.encode(car.getCarName(), "UTF-8") %>&numberPlate=<%= URLEncoder.encode(car.getNumberPlate(), "UTF-8") %>&carPhoto=<%= carPhotoEncoded %>" class="btn btn-success">Book Now</a>
+                        <a href="${pageContext.request.contextPath}/CustomerDashboard/bookingForm.jsp?carId=<%= car.getCarId() %>&carName=<%= URLEncoder.encode(car.getCarName(), "UTF-8") %>&numberPlate=<%= URLEncoder.encode(car.getNumberPlate(), "UTF-8") %>&carPhoto=<%= carPhotoEncoded %>&acFarePerKm=<%= car.getAcFarePerKm() %>&nonAcFarePerKm=<%= car.getNonAcFarePerKm() %>&acFarePerDay=<%= car.getAcFarePerDay() %>&nonAcFarePerDay=<%= car.getNonAcFarePerDay() %>" class="btn btn-success">Book Now</a>
                     </div>
                 </div>
             </div>

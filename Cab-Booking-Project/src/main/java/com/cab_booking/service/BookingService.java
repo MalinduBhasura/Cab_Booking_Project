@@ -1,22 +1,32 @@
 package com.cab_booking.service;
 
-import com.cab_booking.dao.BookingBillDAO;
+import java.sql.SQLException;
+import java.util.List;
+
 import com.cab_booking.dao.BookingDAO;
-import com.cab_booking.dao.CarDAO;
-import com.cab_booking.dao.DriverDAO;
 import com.cab_booking.model.Booking;
-import com.cab_booking.model.BookingBill;
-import com.cab_booking.model.Car;
 
 public class BookingService {
-    private BookingDAO bookingDAO = new BookingDAO();
-    private BookingBillDAO bookingBillDAO = new BookingBillDAO();
+    private BookingDAO bookingDAO;
 
-    public void createBooking(Booking booking, BookingBill bill) {
-        int bookingId = bookingDAO.createBooking(booking);
-        if (bookingId != -1) {
-            bill.setBookingId(bookingId);
-            bookingBillDAO.createBookingBill(bill);
+    public BookingService() {
+        this.bookingDAO = new BookingDAO();
+    }
+
+    public void createBooking(Booking booking) {
+        try {
+            bookingDAO.addBooking(booking);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Booking> getBookingsByCustomerId(int customerId) {
+        try {
+            return bookingDAO.getBookingsByCustomerId(customerId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

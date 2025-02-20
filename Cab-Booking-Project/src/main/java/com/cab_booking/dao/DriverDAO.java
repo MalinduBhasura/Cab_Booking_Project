@@ -106,6 +106,7 @@ public class DriverDAO {
                 Driver driver = new Driver();
                 driver.setDriverId(resultSet.getInt("driver_id"));
                 driver.setDriverName(resultSet.getString("driver_name"));
+                driver.setPhone(resultSet.getString("phone"));
                 driver.setStatus(resultSet.getString("status"));
                 drivers.add(driver);
             }
