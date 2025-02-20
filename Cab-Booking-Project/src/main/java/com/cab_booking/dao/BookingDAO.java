@@ -1,14 +1,14 @@
 package com.cab_booking.dao;
 
+import com.cab_booking.model.Booking;
+import com.cab_booking.util.DatabaseConnection;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.cab_booking.model.Booking;
-import com.cab_booking.util.DatabaseConnection;
 
 public class BookingDAO {
     private Connection connection;
@@ -34,6 +34,7 @@ public class BookingDAO {
             stmt.executeUpdate();
         }
     }
+
     public List<Booking> getBookingsByCustomerId(int customerId) throws SQLException {
         List<Booking> bookings = new ArrayList<>();
         String query = "SELECT * FROM booking WHERE customer_id = ?";
@@ -49,7 +50,10 @@ public class BookingDAO {
                 booking.setStartDate(rs.getDate("start_date"));
                 booking.setEndDate(rs.getDate("end_date"));
                 booking.setCarType(rs.getString("car_type"));
+                booking.setFare(rs.getDouble("fare"));
                 booking.setBookingType(rs.getString("booking_type"));
+                booking.setEstimatedKm(rs.getInt("estimated_km"));
+                booking.setTotalDays(rs.getInt("total_days"));
                 booking.setTotalAmount(rs.getDouble("total_amount"));
                 bookings.add(booking);
             }

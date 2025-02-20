@@ -25,4 +25,5 @@ public class CustomerDashboardController extends HttpServlet {
         // Forward to the customer dashboard JSP
         request.getRequestDispatcher("customerDashboard.jsp").forward(request, response);
     }
+    
 }

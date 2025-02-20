@@ -20,20 +20,27 @@
     <style>
         body {
             background: #f8f9fa;
+            font-family: 'Arial', sans-serif;
         }
         .navbar {
             background: #007bff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .navbar-brand, .nav-link {
             color: #fff !important;
+        }
+        .nav-link:hover {
+            color: #f8f9fa !important;
+            opacity: 0.8;
         }
         .card {
             transition: transform 0.3s, box-shadow 0.3s;
             border-radius: 15px;
             overflow: hidden;
+            border: none;
         }
         .card:hover {
-            transform: scale(1.05);
+            transform: translateY(-5px);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
         .card-img-top {
@@ -41,8 +48,26 @@
             object-fit: cover;
         }
         .card-body {
-            background: linear-gradient(135deg, #ffffff, #e3e3e3);
+            background: #fff;
             border-radius: 0 0 15px 15px;
+        }
+        .card-title {
+            color: #007bff;
+            font-weight: bold;
+        }
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        .alert-warning {
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+            color: #856404;
         }
     </style>
 </head>
@@ -74,7 +99,7 @@
                 <div class="card">
                     <img src="<%= car.getCarPhoto() %>" class="card-img-top" alt="Car Photo">
                     <div class="card-body text-center">
-                        <h5 class="card-title text-primary fw-bold"><%= car.getCarName() %> - <%= car.getNumberPlate() %></h5>
+                        <h5 class="card-title"><%= car.getCarName() %> - <%= car.getNumberPlate() %></h5>
                         <p class="card-text text-muted">
                             AC Fare (Per Km): <strong><%= car.getAcFarePerKm() %></strong><br>
                             Non-AC Fare (Per Km): <strong><%= car.getNonAcFarePerKm() %></strong><br>

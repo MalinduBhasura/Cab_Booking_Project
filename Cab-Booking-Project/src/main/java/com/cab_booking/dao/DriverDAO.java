@@ -115,4 +115,13 @@ public class DriverDAO {
         }
         return drivers;
     }
+ // Method to update driver status
+    public void updateDriverStatus(int driverId, String status) throws SQLException {
+        String query = "UPDATE driver SET status = ? WHERE driver_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, status);
+            stmt.setInt(2, driverId);
+            stmt.executeUpdate();
+        }
+    }
 }

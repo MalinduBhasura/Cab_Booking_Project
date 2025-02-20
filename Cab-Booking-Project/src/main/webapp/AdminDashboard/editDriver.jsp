@@ -1,17 +1,43 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.cab_booking.model.Driver" %>
+
 <%
     Driver driver = (Driver) request.getAttribute("driver");
 %>
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Edit Driver</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .form-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 50px auto;
+        }
+        .form-container h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .form-container .btn-primary {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Edit Driver</h1>
+    <div class="form-container">
+        <h1 class="text-center">Edit Driver</h1>
         <form action="${pageContext.request.contextPath}/AdminDashboard/driver" method="post">
             <input type="hidden" name="action" value="update">
             <input type="hidden" name="driverId" value="<%= driver.getDriverId() %>">
@@ -36,6 +62,12 @@
             </div>
             <button type="submit" class="btn btn-primary">Update Driver</button>
         </form>
+        <div class="text-center mt-3">
+            <a href="${pageContext.request.contextPath}/AdminDashboard/driver" class="btn btn-secondary">Back to Driver Management</a>
+        </div>
     </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

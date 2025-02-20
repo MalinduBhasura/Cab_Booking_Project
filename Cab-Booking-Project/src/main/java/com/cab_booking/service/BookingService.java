@@ -1,10 +1,10 @@
 package com.cab_booking.service;
 
-import java.sql.SQLException;
-import java.util.List;
-
 import com.cab_booking.dao.BookingDAO;
 import com.cab_booking.model.Booking;
+
+import java.sql.SQLException;
+import java.util.List;
 
 public class BookingService {
     private BookingDAO bookingDAO;

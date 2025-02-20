@@ -35,14 +35,14 @@ public class LoginServlet extends HttpServlet {
             Customer authenticatedCustomer = userService.authenticateCustomer(username, password);
 
             if (authenticatedCustomer != null) {
-                // Create a session for the customer
                 HttpSession session = request.getSession();
                 session.setAttribute("user", authenticatedCustomer);
-                session.setAttribute("userType", "customer"); // Set user type as customer
-                session.setAttribute("customerId", authenticatedCustomer.getCustomerId()); // Add customerId to session
-                response.sendRedirect(request.getContextPath() + "/customerDashboard"); // Redirect to CustomerDashboardController
+                session.setAttribute("userType", "customer");
+                session.setAttribute("customerId", authenticatedCustomer.getCustomerId());
+                System.out.println("Customer ID set in session: " + authenticatedCustomer.getCustomerId());
+                response.sendRedirect(request.getContextPath() + "/customerDashboard");
             } else {
-                // Redirect back to the login page with an error message
+                System.out.println("Customer authentication failed.");
                 response.sendRedirect(request.getContextPath() + "/login.jsp?error=1");
             }
         }

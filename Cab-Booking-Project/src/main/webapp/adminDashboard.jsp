@@ -10,11 +10,11 @@
 <html>
 <head>
     <title>Admin Dashboard</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
         }
         .sidebar {
             height: 100vh;
@@ -23,6 +23,7 @@
             padding-top: 20px;
             position: fixed;
             width: 250px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
         }
         .sidebar a {
             color: white;
@@ -30,6 +31,7 @@
             padding: 15px;
             display: block;
             font-size: 18px;
+            transition: background 0.3s;
         }
         .sidebar a:hover {
             background: #495057;
@@ -37,6 +39,28 @@
         .content {
             margin-left: 260px;
             padding: 20px;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .card-header {
+            background: #007bff;
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+        .btn-light {
+            background-color: #f8f9fa;
+            border: none;
+        }
+        .btn-light:hover {
+            background-color: #e2e6ea;
         }
     </style>
 </head>
@@ -56,7 +80,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card shadow-sm">
-                        <div class="card-header bg-primary text-white">
+                        <div class="card-header">
                             <h3 class="mb-0">Welcome, Admin!</h3>
                         </div>
                         <div class="card-body">
@@ -68,7 +92,7 @@
             
             <div class="row mt-4">
                 <div class="col-md-4">
-                    <div class="card text-white bg-success shadow">
+                    <div class="card text-white bg-success">
                         <div class="card-body">
                             <h5 class="card-title">Total Cars</h5>
                             <p class="card-text">Manage all registered cars.</p>
@@ -77,7 +101,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card text-white bg-info shadow">
+                    <div class="card text-white bg-info">
                         <div class="card-body">
                             <h5 class="card-title">Total Drivers</h5>
                             <p class="card-text">Manage all drivers.</p>
@@ -86,7 +110,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card text-white bg-warning shadow">
+                    <div class="card text-white bg-warning">
                         <div class="card-body">
                             <h5 class="card-title">Total Bookings</h5>
                             <p class="card-text">View and manage bookings.</p>
@@ -98,7 +122,6 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

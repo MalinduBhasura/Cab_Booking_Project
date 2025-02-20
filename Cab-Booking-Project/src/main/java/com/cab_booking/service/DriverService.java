@@ -2,6 +2,8 @@ package com.cab_booking.service;
 
 import com.cab_booking.dao.DriverDAO;
 import com.cab_booking.model.Driver;
+
+import java.sql.SQLException;
 import java.util.List;
 
 public class DriverService {
@@ -40,5 +42,13 @@ public class DriverService {
     // Get driver by ID
     public Driver getDriverById(int driverId) {
         return driverDAO.getDriverById(driverId);
+    }
+    // Method to update driver status
+    public void updateDriverStatus(int driverId, String status) {
+        try {
+            driverDAO.updateDriverStatus(driverId, status);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -13,7 +13,7 @@ import com.cab_booking.service.BookingService;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/bookingDetails")
+@WebServlet("/CustomerDashboard/bookingDetails")
 public class BookingDetailsController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private BookingService bookingService = new BookingService();
@@ -24,7 +24,6 @@ public class BookingDetailsController extends HttpServlet {
         
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("customerId") == null) {
-            // Redirect to login page if user is not authenticated
             response.sendRedirect("login.jsp");
             return;
         }

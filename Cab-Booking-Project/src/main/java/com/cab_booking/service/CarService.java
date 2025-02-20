@@ -37,4 +37,12 @@ public class CarService {
     public List<Car> getAvailableCars() {
         return carDAO.getAvailableCars();
     }
+    // Method to update car status
+    public void updateCarStatus(int carId, String status) {
+        try {
+            carDAO.updateCarStatus(carId, status);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
