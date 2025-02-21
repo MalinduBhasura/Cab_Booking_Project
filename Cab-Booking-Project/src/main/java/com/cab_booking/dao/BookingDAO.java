@@ -17,9 +17,9 @@ public class BookingDAO {
         this.connection = DatabaseConnection.getInstance().getConnection();
     }
 
-    public void addBooking(Booking booking) throws SQLException {
+    public int addBooking(Booking booking) throws SQLException {
         String query = "INSERT INTO booking (customer_id, car_id, driver_id, start_date, end_date, car_type, fare, booking_type, estimated_km, total_days, total_amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, booking.getCustomerId());
             stmt.setInt(2, booking.getCarId());
             stmt.setInt(3, booking.getDriverId());
@@ -32,7 +32,15 @@ public class BookingDAO {
             stmt.setInt(10, booking.getTotalDays());
             stmt.setDouble(11, booking.getTotalAmount());
             stmt.executeUpdate();
+
+            // Retrieve the generated booking ID
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1); // Return the generated booking ID
+                }
+            }
         }
+        return -1; // Return -1 if the booking ID could not be retrieved
     }
 
     public List<Booking> getBookingsByCustomerId(int customerId) throws SQLException {

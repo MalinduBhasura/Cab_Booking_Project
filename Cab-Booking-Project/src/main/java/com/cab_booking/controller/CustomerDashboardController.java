@@ -15,6 +15,12 @@ public class CustomerDashboardController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	
+    	HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null || !"customer".equals(session.getAttribute("userType"))) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
         // Fetch available cars
         List<Car> availableCars = carService.getAvailableCars();
         System.out.println("Available Cars: " + availableCars); // Debug log
@@ -27,3 +33,4 @@ public class CustomerDashboardController extends HttpServlet {
     }
     
 }
+

@@ -35,7 +35,7 @@ public class BookingController extends HttpServlet {
             response.sendRedirect("login.jsp");
             return;
         }
-
+  
         DriverDAO driverDAO = new DriverDAO();
         List<Driver> availableDrivers = driverDAO.getAvailableDrivers();
         request.setAttribute("drivers", availableDrivers);
@@ -66,7 +66,7 @@ public class BookingController extends HttpServlet {
         String carType = req.getParameter("car_type");
         double fare = Double.parseDouble(req.getParameter("fare"));
         String bookingType = req.getParameter("booking_type");
-
+   
         // Initialize estimated_km and total_days
         int estimatedKm = 0;
         int totalDays = 0;
@@ -106,8 +106,10 @@ public class BookingController extends HttpServlet {
         // Update car and driver status to "Booked"
         carService.updateCarStatus(carId, "Booked");
         driverService.updateDriverStatus(driverId, "Booked");
+     // Set the booking object as a request attribute
+        req.setAttribute("booking", booking);
 
         // Redirect to booking details page
-        resp.sendRedirect("/Cab-Booking-Project/CustomerDashboard/bookingDetails");
+        req.getRequestDispatcher("/CustomerDashboard/bookingConfirm.jsp").forward(req, resp);
     }
 }

@@ -15,7 +15,8 @@ public class BookingService {
 
     public void createBooking(Booking booking) {
         try {
-            bookingDAO.addBooking(booking);
+            int bookingId = bookingDAO.addBooking(booking);
+            booking.setBookingId(bookingId); // Set the generated booking ID
         } catch (SQLException e) {
             e.printStackTrace();
         }
