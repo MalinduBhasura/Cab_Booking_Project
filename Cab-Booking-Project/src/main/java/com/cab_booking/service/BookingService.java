@@ -2,7 +2,10 @@ package com.cab_booking.service;
 
 import com.cab_booking.dao.BookingDAO;
 import com.cab_booking.model.Booking;
+
+import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookingService {
@@ -35,6 +38,21 @@ public class BookingService {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+    public List<Booking> getAllBookings() {
+        try {
+            return bookingDAO.getAllBookings();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+    public void deleteBooking(int bookingId) {
+        try {
+            bookingDAO.deleteBooking(bookingId);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
     
@@ -83,4 +101,12 @@ public class BookingService {
             return null;
         }
     }
+    public void calculateExtraCharges(int bookingId, Date returnDate) {
+        try {
+            bookingDAO.calculateExtraCharges(bookingId, returnDate);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
 }

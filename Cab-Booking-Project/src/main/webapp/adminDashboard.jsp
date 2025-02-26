@@ -109,15 +109,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card text-white bg-warning">
-                        <div class="card-body">
-                            <h5 class="card-title">Total Bookings</h5>
-                            <p class="card-text">View and manage bookings.</p>
-                            <a href="#" class="btn btn-light">View Bookings</a>
-                        </div>
-                    </div>
-                </div>
+             <div class="col-md-4">
+    <div class="card text-white bg-warning">
+        <div class="card-body">
+            <h5 class="card-title">Total Bookings</h5>
+            <p class="card-text">View and manage bookings.</p>
+            <a href="/Cab-Booking-Project/AdminDashboard/view_booking.jsp" class="btn btn-light">View Bookings</a>
+        </div>
+    </div>
+</div>
             </div>
         </div>
     </div>

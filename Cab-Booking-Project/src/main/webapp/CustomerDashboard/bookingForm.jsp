@@ -5,10 +5,12 @@
 <%@ page import="com.cab_booking.model.Car" %>
 <%@ page import="com.cab_booking.model.Customer" %>
 <%@ page import="com.cab_booking.service.DriverService" %>
+<%@ page import="com.cab_booking.service.BookingService" %>
+
 <%
-DriverService driverService = new DriverService();
-List<Driver> drivers = driverService.getAvailableDrivers();
-request.setAttribute("drivers", drivers);
+    DriverService driverService = new DriverService();
+    List<Driver> drivers = driverService.getAvailableDrivers();
+    request.setAttribute("drivers", drivers);
 
     String carId = request.getParameter("carId");
     String carName = URLDecoder.decode(request.getParameter("carName"), "UTF-8");
@@ -18,6 +20,16 @@ request.setAttribute("drivers", drivers);
     double nonAcFarePerKm = Double.parseDouble(request.getParameter("nonAcFarePerKm"));
     double acFarePerDay = Double.parseDouble(request.getParameter("acFarePerDay"));
     double nonAcFarePerDay = Double.parseDouble(request.getParameter("nonAcFarePerDay"));
+
+    // Check if the customer is eligible for a discount
+     // Retrieve customerId from request attribute instead of session
+    Integer customerId = (Integer) request.getAttribute("customerId");
+
+    // Get number of bookings for the customer
+    int numberOfBookings = (customerId != null) ? new BookingService().getNumberOfBookingsByCustomerId(customerId) : 0;
+
+    // Check discount eligibility
+    boolean isEligibleForDiscount = numberOfBookings >= 3;
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,11 +40,11 @@ request.setAttribute("drivers", drivers);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #ffffff; /* White background */
+            background-color: #ffffff;
             font-family: 'Arial', sans-serif;
         }
         .form-container {
-            background: #ffffff; /* White background for the form */
+            background: #ffffff;
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -40,24 +52,24 @@ request.setAttribute("drivers", drivers);
             margin: 50px auto;
         }
         .form-container h1 {
-            color: #007bff; /* Blue header */
+            color: #007bff;
             margin-bottom: 20px;
             text-align: center;
         }
         .form-container label {
             font-weight: bold;
-            color: #333; /* Dark gray text */
+            color: #333;
         }
         .form-container .form-control {
             border-radius: 10px;
-            border: 1px solid #ddd; /* Light gray border */
+            border: 1px solid #ddd;
         }
         .form-container .form-control:focus {
-            border-color: #007bff; /* Blue border on focus */
+            border-color: #007bff;
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         }
         .form-container .btn-primary {
-            background-color: #007bff; /* Blue button */
+            background-color: #007bff;
             border: none;
             border-radius: 10px;
             padding: 10px;
@@ -65,24 +77,24 @@ request.setAttribute("drivers", drivers);
             width: 100%;
         }
         .form-container .btn-primary:hover {
-            background-color: #0056b3; /* Darker blue on hover */
+            background-color: #0056b3;
         }
         .form-container .form-check-input:checked {
-            background-color: #007bff; /* Blue for checked radio buttons */
+            background-color: #007bff;
             border-color: #007bff;
         }
         .form-container .form-check-label {
-            color: #333; /* Dark gray text */
+            color: #333;
         }
         .navbar {
-            background-color: #007bff; /* Blue navbar */
+            background-color: #007bff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .navbar-brand, .nav-link {
-            color: #fff !important; /* White text */
+            color: #fff !important;
         }
         .navbar-brand:hover, .nav-link:hover {
-            opacity: 0.8; /* Slight fade on hover */
+            opacity: 0.8;
         }
     </style>
     <script>
@@ -116,7 +128,14 @@ request.setAttribute("drivers", drivers);
                 const totalDays = parseFloat(document.getElementById("total_days").value);
                 totalAmount = fare * totalDays;
             }
-            document.getElementById("total_amount").value = totalAmount;
+
+            // Apply 30% discount if eligible
+            const isEligibleForDiscount = <%= isEligibleForDiscount %>;
+            if (isEligibleForDiscount) {
+                totalAmount *= 0.70; // 30% discount
+            }
+
+            document.getElementById("total_amount").value = totalAmount.toFixed(2);
         }
 
         function toggleFields() {
@@ -129,7 +148,17 @@ request.setAttribute("drivers", drivers);
                 document.getElementById("estimated_km").disabled = true;
                 document.getElementById("estimated_km").value = 0;
                 document.getElementById("total_days").disabled = false;
+                calculateTotalDays(); // Calculate total days when Per Day is selected
             }
+            calculateTotalAmount();
+        }
+
+        function calculateTotalDays() {
+            const startDate = new Date(document.getElementById("start_date").value);
+            const endDate = new Date(document.getElementById("end_date").value);
+            const timeDiff = endDate - startDate;
+            const totalDays = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+            document.getElementById("total_days").value = totalDays;
             calculateTotalAmount();
         }
     </script>
@@ -154,6 +183,11 @@ request.setAttribute("drivers", drivers);
     <div class="container mt-5">
         <div class="form-container">
             <h1>Booking Form</h1>
+            <% if (isEligibleForDiscount) { %>
+                <div class="alert alert-success" role="alert">
+                    You are eligible for a 30% discount on your booking!
+                </div>
+            <% } %>
             <form action="${pageContext.request.contextPath}/CustomerDashboard/book" method="post" class="needs-validation" novalidate>
                 <input type="hidden" name="car_id" value="<%= carId %>">
                 <input type="hidden" name="car_name" value="<%= carName %>">
@@ -179,11 +213,11 @@ request.setAttribute("drivers", drivers);
                 <!-- Start Date and End Date -->
                 <div class="mb-3">
                     <label for="start_date" class="form-label">Start Date:</label>
-                    <input type="date" id="start_date" name="start_date" class="form-control" required>
+                    <input type="date" id="start_date" name="start_date" class="form-control" required onchange="calculateTotalDays()">
                 </div>
                 <div class="mb-3">
                     <label for="end_date" class="form-label">End Date:</label>
-                    <input type="date" id="end_date" name="end_date" class="form-control" required>
+                    <input type="date" id="end_date" name="end_date" class="form-control" required onchange="calculateTotalDays()">
                 </div>
 
                 <!-- Charge Type (Per KM / Per Day) -->

@@ -6,6 +6,7 @@ import com.cab_booking.util.DatabaseConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class BookingDAO {
     private Connection connection;
@@ -63,11 +64,44 @@ public class BookingDAO {
                 booking.setEstimatedKm(rs.getInt("estimated_km"));
                 booking.setTotalDays(rs.getInt("total_days"));
                 booking.setTotalAmount(rs.getDouble("total_amount"));
-                booking.setStatus(rs.getString("status")); // Add status
+                booking.setStatus(rs.getString("status")); // Fetch status
                 bookings.add(booking);
             }
         }
         return bookings;
+    }
+    public List<Booking> getAllBookings() throws SQLException {
+        List<Booking> bookings = new ArrayList<>();
+        String query = "SELECT * FROM booking";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Booking booking = new Booking();
+                booking.setBookingId(rs.getInt("booking_id"));
+                booking.setCustomerId(rs.getInt("customer_id"));
+                booking.setCarId(rs.getInt("car_id"));
+                booking.setDriverId(rs.getInt("driver_id"));
+                booking.setStartDate(rs.getDate("start_date"));
+                booking.setEndDate(rs.getDate("end_date"));
+                booking.setCarType(rs.getString("car_type"));
+                booking.setFare(rs.getDouble("fare"));
+                booking.setBookingType(rs.getString("booking_type"));
+                booking.setEstimatedKm(rs.getInt("estimated_km"));
+                booking.setTotalDays(rs.getInt("total_days"));
+                booking.setTotalAmount(rs.getDouble("total_amount"));
+                booking.setStatus(rs.getString("status")); // Fetch status
+                
+                bookings.add(booking);
+            }
+        }
+        return bookings;
+    }
+    public void deleteBooking(int bookingId) throws SQLException {
+        String query = "DELETE FROM booking WHERE booking_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, bookingId);
+            stmt.executeUpdate();
+        }
     }
 
     public void returnBooking(int bookingId) throws SQLException {
@@ -160,6 +194,42 @@ public class BookingDAO {
             stmt.setInt(1, bookingId);
             int rowsUpdated = stmt.executeUpdate();
             return rowsUpdated > 0; // Return true if at least one row was updated
+        }
+    }
+    
+    public void calculateExtraCharges(int bookingId, Date returnDate) throws SQLException {
+        String query = "SELECT start_date, end_date, booking_type, fare, estimated_km, total_days, total_amount FROM booking WHERE booking_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, bookingId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Date startDate = rs.getDate("start_date");
+                Date endDate = rs.getDate("end_date");
+                String bookingType = rs.getString("booking_type");
+                double fare = rs.getDouble("fare");
+                int estimatedKm = rs.getInt("estimated_km");
+                int totalDays = rs.getInt("total_days");
+                double totalAmount = rs.getDouble("total_amount");
+
+                long diffInMillies = returnDate.getTime() - endDate.getTime();
+                long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+                if (diffInDays > 0) {
+                    if (bookingType.equals("Per KM")) {
+                        int extraKm = (int) (diffInDays * 100); // Assuming 100 km per extra day
+                        totalAmount += fare * extraKm * 0.20; // 20% extra for each extra KM
+                    } else if (bookingType.equals("Per Day")) {
+                        totalAmount += fare * diffInDays * 0.30; // 30% extra for each extra day
+                    }
+                }
+
+                String updateQuery = "UPDATE booking SET total_amount = ? WHERE booking_id = ?";
+                try (PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+                    updateStmt.setDouble(1, totalAmount);
+                    updateStmt.setInt(2, bookingId);
+                    updateStmt.executeUpdate();
+                }
+            }
         }
     }
 }

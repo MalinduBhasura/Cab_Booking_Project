@@ -6,6 +6,7 @@ import com.cab_booking.model.Driver;
 import com.cab_booking.service.BookingService;
 import com.cab_booking.service.CarService;
 import com.cab_booking.service.DriverService;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -21,15 +22,20 @@ public class BookingController extends HttpServlet {
     private DriverService driverService = new DriverService();
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("customerId") == null) {
             response.sendRedirect("login.jsp");
             return;
         }
-  
+
+        // Get the number of bookings for the customer to check for discount eligibility
+        Integer customerId = (Integer) session.getAttribute("customerId");
+        int numberOfBookings = bookingService.getNumberOfBookingsByCustomerId(customerId);
+        request.setAttribute("numberOfBookings", numberOfBookings);
+
         DriverDAO driverDAO = new DriverDAO();
         List<Driver> availableDrivers = driverDAO.getAvailableDrivers();
         request.setAttribute("drivers", availableDrivers);
@@ -39,7 +45,7 @@ public class BookingController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
+    	HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("customerId") == null) {
             resp.sendRedirect("login.jsp");
             return;
@@ -86,7 +92,15 @@ public class BookingController extends HttpServlet {
             totalAmount = fare * totalDays; // Total amount for Per Day booking
         }
 
-        // Create booking object
+        // Apply discount if customer has 3 or more bookings
+        int numberOfBookings = bookingService.getNumberOfBookingsByCustomerId(customerId);
+        boolean discountApplied = numberOfBookings >= 3;
+        if (discountApplied) {
+            double discount = totalAmount * 0.30; // 30% discount
+            totalAmount -= discount;
+        }
+
+     // Create booking object
         Booking booking = new Booking();
         booking.setCustomerId(customerId);
         booking.setCarId(carId);
@@ -99,16 +113,26 @@ public class BookingController extends HttpServlet {
         booking.setEstimatedKm(estimatedKm);
         booking.setTotalDays(totalDays);
         booking.setTotalAmount(totalAmount);
+        booking.setStatus("Active"); // Set default status to "Active"
 
-        // Save booking to database
-        bookingService.createBooking(booking);
+        // Save booking to database and retrieve the generated Booking ID
+        int bookingId = bookingService.createBooking(booking);
+        if (bookingId > 0) {
+            booking.setBookingId(bookingId); // Set the generated Booking ID
+        } else {
+            // Handle error case (e.g., show an error message)
+            req.setAttribute("error", "Failed to create booking. Please try again.");
+            req.getRequestDispatcher("/CustomerDashboard/booking.jsp").forward(req, resp);
+            return;
+        }
 
         // Update car and driver status to "Booked"
         carService.updateCarStatus(carId, "Booked");
         driverService.updateDriverStatus(driverId, "Booked");
 
-        // Pass the booking object to the confirmation page
+        // Pass the booking object and discount status to the confirmation page
         req.setAttribute("booking", booking);
+        req.setAttribute("discountApplied", discountApplied); // Set discountApplied attribute
 
         // Forward to the booking confirmation page
         req.getRequestDispatcher("/CustomerDashboard/bookingConfirm.jsp").forward(req, resp);
