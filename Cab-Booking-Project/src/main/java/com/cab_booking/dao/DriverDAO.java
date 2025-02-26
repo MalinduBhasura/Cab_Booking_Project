@@ -116,12 +116,13 @@ public class DriverDAO {
         return drivers;
     }
  // Method to update driver status
-    public void updateDriverStatus(int driverId, String status) throws SQLException {
+    public boolean updateDriverStatus(int driverId, String status) throws SQLException {
         String query = "UPDATE driver SET status = ? WHERE driver_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, status);
             stmt.setInt(2, driverId);
-            stmt.executeUpdate();
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0; // Return true if at least one row was updated
         }
     }
 }

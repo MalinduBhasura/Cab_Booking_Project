@@ -131,12 +131,13 @@ public List<Car> getAvailableCars() {
   return cars;
 }
 // Method to update car status
-public void updateCarStatus(int carId, String status) throws SQLException {
+public boolean updateCarStatus(int carId, String status) throws SQLException {
     String query = "UPDATE car SET status = ? WHERE car_id = ?";
     try (PreparedStatement stmt = connection.prepareStatement(query)) {
         stmt.setString(1, status);
         stmt.setInt(2, carId);
-        stmt.executeUpdate();
+        int rowsUpdated = stmt.executeUpdate();
+        return rowsUpdated > 0; // Return true if at least one row was updated
     }
 }
 }

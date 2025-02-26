@@ -1,20 +1,14 @@
 package com.cab_booking.controller;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import com.cab_booking.dao.DriverDAO;
 import com.cab_booking.model.Booking;
 import com.cab_booking.model.Driver;
 import com.cab_booking.service.BookingService;
 import com.cab_booking.service.CarService;
 import com.cab_booking.service.DriverService;
-
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
@@ -66,12 +60,11 @@ public class BookingController extends HttpServlet {
         String carType = req.getParameter("car_type");
         double fare = Double.parseDouble(req.getParameter("fare"));
         String bookingType = req.getParameter("booking_type");
-   
+
         // Initialize estimated_km and total_days
         int estimatedKm = 0;
         int totalDays = 0;
 
-        // Set values based on booking type
         if (bookingType.equals("Per KM")) {
             String estimatedKmStr = req.getParameter("estimated_km");
             if (estimatedKmStr != null && !estimatedKmStr.isEmpty()) {
@@ -84,7 +77,14 @@ public class BookingController extends HttpServlet {
             }
         }
 
-        double totalAmount = Double.parseDouble(req.getParameter("total_amount"));
+        // Calculate total amount based on booking type
+        double totalAmount = 0;
+
+        if (bookingType.equals("Per KM")) {
+            totalAmount = fare * estimatedKm; // Total amount for Per KM booking
+        } else if (bookingType.equals("Per Day")) {
+            totalAmount = fare * totalDays; // Total amount for Per Day booking
+        }
 
         // Create booking object
         Booking booking = new Booking();
@@ -102,14 +102,15 @@ public class BookingController extends HttpServlet {
 
         // Save booking to database
         bookingService.createBooking(booking);
-        
+
         // Update car and driver status to "Booked"
         carService.updateCarStatus(carId, "Booked");
         driverService.updateDriverStatus(driverId, "Booked");
-     // Set the booking object as a request attribute
+
+        // Pass the booking object to the confirmation page
         req.setAttribute("booking", booking);
 
-        // Redirect to booking details page
+        // Forward to the booking confirmation page
         req.getRequestDispatcher("/CustomerDashboard/bookingConfirm.jsp").forward(req, resp);
     }
 }

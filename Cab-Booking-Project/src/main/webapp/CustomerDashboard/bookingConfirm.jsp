@@ -41,19 +41,19 @@
             <div class="card-body">
                 <h5 class="card-title">Booking Details</h5>
                 <p class="card-text">
-    <strong>Order Number:</strong> <%= booking.getBookingId() %><br>
-    <strong>Customer ID:</strong> <%= booking.getCustomerId() %><br>
-    <strong>Car ID:</strong> <%= booking.getCarId() %><br>
-    <strong>Driver ID:</strong> <%= booking.getDriverId() %><br>
-    <strong>Start Date:</strong> <%= booking.getStartDate() %><br>
-    <strong>End Date:</strong> <%= booking.getEndDate() %><br>
-    <strong>Car Type:</strong> <%= booking.getCarType() %><br>
-    <strong>Fare:</strong> <%= booking.getFare() %><br>
-    <strong>Booking Type:</strong> <%= booking.getBookingType() %><br>
-    <strong>Estimated KM:</strong> <%= booking.getEstimatedKm() == 0 ? "-" : booking.getEstimatedKm() %><br>
-    <strong>Total Days:</strong> <%= booking.getTotalDays() == 0 ? "-" : booking.getTotalDays() %><br>
-    <strong>Total Amount:</strong> <%= booking.getTotalAmount() %><br>
-</p>
+                    <strong>Order Number:</strong> <%= booking.getBookingId() %><br>
+                    <strong>Customer ID:</strong> <%= booking.getCustomerId() %><br>
+                    <strong>Car ID:</strong> <%= booking.getCarId() %><br>
+                    <strong>Driver ID:</strong> <%= booking.getDriverId() %><br>
+                    <strong>Start Date:</strong> <%= booking.getStartDate() %><br>
+                    <strong>End Date:</strong> <%= booking.getEndDate() %><br>
+                    <strong>Car Type:</strong> <%= booking.getCarType() %><br>
+                    <strong>Fare:</strong> <%= booking.getFare() %><br>
+                    <strong>Booking Type:</strong> <%= booking.getBookingType() %><br>
+                    <strong>Estimated KM:</strong> <%= booking.getEstimatedKm() == 0 ? "-" : booking.getEstimatedKm() %><br>
+                    <strong>Total Days:</strong> <%= booking.getTotalDays() == 0 ? "-" : booking.getTotalDays() %><br>
+                    <strong>Total Amount:</strong> <%= booking.getTotalAmount() %><br>
+                </p>
                 <a href="${pageContext.request.contextPath}/CustomerDashboard/bookingDetails" class="btn btn-primary">View All Bookings</a>
             </div>
         </div>

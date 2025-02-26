@@ -80,7 +80,8 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/CustomerDashboard/bookingDetails" class="btn btn-secondary">Bookig Details</a></li>
+                    <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/CustomerDashboard/bookingDetails">Booking Details</a></li>
+                    <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/CustomerDashboard/returnBooking">Return Booking</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Bookings</a></li>
                     <li class="nav-item"><a class="nav-link" href="logout.jsp">Logout</a></li>
@@ -120,7 +121,7 @@
             </div>
             <% } %>
         </div>
-         <div class="text-center mt-3">
+        <div class="text-center mt-3">
             <a href="${pageContext.request.contextPath}/CustomerDashboard/bookingDetails" class="btn btn-secondary">Back to Admin Dashboard</a>
         </div>
     </div>

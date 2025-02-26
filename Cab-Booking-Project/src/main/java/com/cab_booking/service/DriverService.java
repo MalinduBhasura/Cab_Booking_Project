@@ -44,11 +44,13 @@ public class DriverService {
         return driverDAO.getDriverById(driverId);
     }
     // Method to update driver status
-    public void updateDriverStatus(int driverId, String status) {
+    public boolean updateDriverStatus(int driverId, String status) {
         try {
-            driverDAO.updateDriverStatus(driverId, status);
+            return driverDAO.updateDriverStatus(driverId, status); // Return the result from DAO
         } catch (SQLException e) {
             e.printStackTrace();
+            return false; // Return false only if an exception occurs
         }
     }
+
 }

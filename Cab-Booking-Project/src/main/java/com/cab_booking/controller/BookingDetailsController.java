@@ -1,15 +1,11 @@
 package com.cab_booking.controller;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import com.cab_booking.model.Booking;
 import com.cab_booking.service.BookingService;
 
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
@@ -31,7 +27,7 @@ public class BookingDetailsController extends HttpServlet {
         // Get customerId from session
         int customerId = (int) session.getAttribute("customerId");
 
-        // Get bookings for the customer
+        // Get all bookings for the customer (including returned bookings)
         List<Booking> bookings = bookingService.getBookingsByCustomerId(customerId);
         request.setAttribute("bookings", bookings);
 

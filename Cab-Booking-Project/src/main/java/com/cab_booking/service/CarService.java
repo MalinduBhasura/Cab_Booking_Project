@@ -38,11 +38,13 @@ public class CarService {
         return carDAO.getAvailableCars();
     }
     // Method to update car status
-    public void updateCarStatus(int carId, String status) {
+    public boolean updateCarStatus(int carId, String status) {
         try {
-            carDAO.updateCarStatus(carId, status);
+            return carDAO.updateCarStatus(carId, status); // Return the result from DAO
         } catch (SQLException e) {
             e.printStackTrace();
+            return false; // Return false only if an exception occurs
         }
     }
+
 }
