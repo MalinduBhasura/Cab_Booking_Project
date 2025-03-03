@@ -87,12 +87,13 @@
 </head>
 <body>
     <!-- Sidebar -->
-    <div class="sidebar">
+  <div class="sidebar">
         <h3 class="text-center">Mega City Cab</h3>
-        <a href="#">Dashboard</a>
-        <a href="car">Manage Cars</a>
+        <a href="${pageContext.request.contextPath}/adminDashboard.jsp">Dashboard</a>
+        <a href="${pageContext.request.contextPath}/car">Manage Cars</a>
         <a href="/Cab-Booking-Project/AdminDashboard/driver">Manage Drivers</a>
-        <a href="logout">Logout</a>
+        <a href="/Cab-Booking-Project/AdminDashboard/view_booking.jsp">View All Booking</a>
+        <a href="${pageContext.request.contextPath}/logout">Logout</a>
     </div>
 
     <!-- Content -->

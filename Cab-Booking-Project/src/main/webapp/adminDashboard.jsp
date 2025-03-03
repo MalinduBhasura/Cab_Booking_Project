@@ -71,6 +71,7 @@
         <a href="#">Dashboard</a>
         <a href="car">Manage Cars</a>
         <a href="/Cab-Booking-Project/AdminDashboard/driver">Manage Drivers</a>
+        <a href="/Cab-Booking-Project/AdminDashboard/view_booking.jsp">View All Booking</a>
         <a href="logout">Logout</a>
     </div>
 
@@ -94,8 +95,8 @@
                 <div class="col-md-4">
                     <div class="card text-white bg-success">
                         <div class="card-body">
-                            <h5 class="card-title">Total Cars</h5>
-                            <p class="card-text">Manage all registered cars.</p>
+                            
+                            <h4 class="card-text">Manage all registered cars.</h4>
                             <a href="car" class="btn btn-light">View Cars</a>
                         </div>
                     </div>
@@ -103,17 +104,16 @@
                 <div class="col-md-4">
                     <div class="card text-white bg-info">
                         <div class="card-body">
-                            <h5 class="card-title">Total Drivers</h5>
-                            <p class="card-text">Manage all drivers.</p>
+                           
+                            <h4 class="card-text">Manage all drivers.</h4>
                             <a href="/Cab-Booking-Project/AdminDashboard/driver" class="btn btn-light">View Drivers</a>
                         </div>
                     </div>
                 </div>
-             <div class="col-md-4">
+     <div class="col-md-4">
     <div class="card text-white bg-warning">
         <div class="card-body">
-            <h5 class="card-title">Total Bookings</h5>
-            <p class="card-text">View and manage bookings.</p>
+            <h4 class="card-text">View and manage bookings.</h4>
             <a href="/Cab-Booking-Project/AdminDashboard/view_booking.jsp" class="btn btn-light">View Bookings</a>
         </div>
     </div>

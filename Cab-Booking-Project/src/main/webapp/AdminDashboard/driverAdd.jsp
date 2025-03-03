@@ -54,10 +54,9 @@
                 <input type="text" class="form-control" id="address" name="address" required>
             </div>
             <button type="submit" class="btn btn-primary">Add Driver</button>
+            <a href="/Cab-Booking-Project/AdminDashboard/driver" class="btn btn-secondary mt-3 w-100">Back to Driver Management</a>
         </form>
-        <div class="text-center mt-3">
-            <a href="${pageContext.request.contextPath}/AdminDashboard/driver" class="btn btn-secondary">Back to Driver Management</a>
-        </div>
+         
     </div>
 
     <!-- Bootstrap JS -->

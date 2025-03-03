@@ -12,37 +12,95 @@
     <title>Driver Management</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
+     <style>
         body {
             background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+        .sidebar {
+            height: 100vh;
+            background: #343a40;
+            color: white;
+            padding-top: 20px;
+            position: fixed;
+            width: 250px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            display: block;
+            font-size: 18px;
+            transition: background 0.3s;
+        }
+        .sidebar a:hover {
+            background: #495057;
+        }
+        .content {
+            margin-left: 260px;
+            padding: 20px;
         }
         .card {
-            margin-top: 50px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
         .card-header {
-            background-color: #007bff;
-            color: #fff;
+            background: #007bff;
+            color: white;
+            border-radius: 15px 15px 0 0;
         }
-        .table th, .table td {
-            vertical-align: middle;
+        .btn-light {
+            background-color: #f8f9fa;
+            border: none;
         }
-        .btn-action {
-            margin: 2px;
+        .btn-light:hover {
+            background-color: #e2e6ea;
+        }
+        .search-form {
+            margin-bottom: 20px;
+        }
+        .search-form input {
+            width: 200px;
+            display: inline-block;
+        }
+        .search-form button {
+            display: inline-block;
         }
     </style>
+    
 </head>
 <body>
-    <div class="container">
-        <div class="card shadow-lg">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h3 class="mb-0">Driver Management</h3>
-                <a href="driverAdd.jsp" class="btn btn-light btn-sm">Add Driver</a>
-            </div>
-            <div class="card-body">
-                <table class="table table-hover table-striped">
-                    <thead class="table-dark">
+<!-- Sidebar -->
+    <div class="sidebar">
+        <h3 class="text-center">Mega City Cab</h3>
+        <a href="${pageContext.request.contextPath}/adminDashboard.jsp">Dashboard</a>
+        <a href="${pageContext.request.contextPath}/car">Manage Cars</a>
+        <a href="/Cab-Booking-Project/AdminDashboard/driver">Manage Drivers</a>
+        <a href="/Cab-Booking-Project/AdminDashboard/view_booking.jsp">View All Booking</a>
+        <a href="logout">Logout</a>
+    </div>
+     <!-- Content -->
+    <div class="content">
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h3 class="mb-0">Driver Management</h3>
+                        </div>
+                        <div class="card-body">
+                          
+
+                            <!-- Bookings Table -->
+                            <table class="table table-striped">
+            <thead >
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
@@ -78,11 +136,15 @@
                         <% } %>
                     </tbody>
                 </table>
+                <div class="text-center">
+            <a href="driverAdd.jsp" class="btn btn-primary btn-add-car">Add Driver</a>
+        </div>
             </div>
         </div>
-        <div class="text-center mt-3">
-            <a href="${pageContext.request.contextPath}/adminDashboard.jsp" class="btn btn-secondary">Back to Admin Dashboard</a>
-        </div>
+        
+    </div>
+    </div>
+    </div>
     </div>
 
     <!-- Bootstrap JS -->

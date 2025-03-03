@@ -73,7 +73,7 @@
                                 <option value="booked">Booked</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary">Add Car</button>
                         <a href="car" class="btn btn-secondary mt-3 w-100">Back to Car Management</a>
                     </form>
                 </div>
