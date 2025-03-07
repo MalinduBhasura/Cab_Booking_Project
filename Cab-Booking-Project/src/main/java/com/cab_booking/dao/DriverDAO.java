@@ -1,7 +1,6 @@
 package com.cab_booking.dao;
 
 import com.cab_booking.model.Driver;
-import com.cab_booking.util.DatabaseConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +8,11 @@ import java.util.List;
 public class DriverDAO {
     private Connection connection;
 
-    public DriverDAO() {
-        connection = DatabaseConnection.getInstance().getConnection();
+    public DriverDAO(Connection connection) {
+        this.connection = connection;
     }
 
- // Add a new driver
+    // Add a new driver
     public boolean addDriver(Driver driver) {
         String sql = "INSERT INTO driver (driver_name, status, phone, address) VALUES (?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -97,9 +96,11 @@ public class DriverDAO {
             return false;
         }
     }
+
+    // Get available drivers
     public List<Driver> getAvailableDrivers() {
         List<Driver> drivers = new ArrayList<>();
-        String sql = "SELECT * FROM driver WHERE status = 'available'";  // Ensure status matches your database
+        String sql = "SELECT * FROM driver WHERE status = 'available'";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
             while (resultSet.next()) {
@@ -115,14 +116,15 @@ public class DriverDAO {
         }
         return drivers;
     }
- // Method to update driver status
+
+    // Method to update driver status
     public boolean updateDriverStatus(int driverId, String status) throws SQLException {
         String query = "UPDATE driver SET status = ? WHERE driver_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, status);
             stmt.setInt(2, driverId);
             int rowsUpdated = stmt.executeUpdate();
-            return rowsUpdated > 0; // Return true if at least one row was updated
+            return rowsUpdated > 0;
         }
     }
 }

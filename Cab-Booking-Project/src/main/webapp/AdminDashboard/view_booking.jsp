@@ -117,7 +117,7 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Booking ID</th>
+                                        <th>Order Number</th>
                                         <th>Customer ID</th>
                                         <th>Car ID</th>
                                         <th>Driver ID</th>

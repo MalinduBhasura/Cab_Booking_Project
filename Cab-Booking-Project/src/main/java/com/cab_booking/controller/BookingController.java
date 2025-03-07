@@ -17,9 +17,15 @@ import java.util.List;
 @WebServlet("/CustomerDashboard/book")
 public class BookingController extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private BookingService bookingService = new BookingService();
-    private CarService carService = new CarService();
-    private DriverService driverService = new DriverService();
+    private BookingService bookingService;
+    private CarService carService;
+    private DriverService driverService;
+
+    public BookingController() {
+        this.bookingService = new BookingService();
+        this.carService = new CarService();
+        this.driverService = new DriverService();
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -36,8 +42,7 @@ public class BookingController extends HttpServlet {
         int numberOfBookings = bookingService.getNumberOfBookingsByCustomerId(customerId);
         request.setAttribute("numberOfBookings", numberOfBookings);
 
-        DriverDAO driverDAO = new DriverDAO();
-        List<Driver> availableDrivers = driverDAO.getAvailableDrivers();
+        List<Driver> availableDrivers = driverService.getAvailableDrivers();
         request.setAttribute("drivers", availableDrivers);
         RequestDispatcher dispatcher = request.getRequestDispatcher("booking.jsp");
         dispatcher.forward(request, response);
@@ -45,7 +50,7 @@ public class BookingController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    	HttpSession session = req.getSession(false);
+        HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("customerId") == null) {
             resp.sendRedirect("login.jsp");
             return;
@@ -100,7 +105,7 @@ public class BookingController extends HttpServlet {
             totalAmount -= discount;
         }
 
-     // Create booking object
+        // Create booking object
         Booking booking = new Booking();
         booking.setCustomerId(customerId);
         booking.setCarId(carId);

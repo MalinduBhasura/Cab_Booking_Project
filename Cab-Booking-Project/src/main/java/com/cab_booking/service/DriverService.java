@@ -1,8 +1,8 @@
 package com.cab_booking.service;
 
+import com.cab_booking.dao.DaoFactory;
 import com.cab_booking.dao.DriverDAO;
 import com.cab_booking.model.Driver;
-
 import java.sql.SQLException;
 import java.util.List;
 
@@ -10,12 +10,11 @@ public class DriverService {
     private DriverDAO driverDAO;
 
     public DriverService() {
-        driverDAO = new DriverDAO();
+        this.driverDAO = DaoFactory.getDriverDao();
     }
 
     // Add a new driver
     public boolean addDriver(Driver driver) {
-        System.out.println("Adding driver: " + driver); // Debug log
         return driverDAO.addDriver(driver);
     }
 
@@ -24,11 +23,11 @@ public class DriverService {
         return driverDAO.getAllDrivers();
     }
 
+    // Get available drivers
     public List<Driver> getAvailableDrivers() {
-        // Fetch drivers from the DAO
-        return driverDAO.getAvailableDrivers();  // Ensure this isn't null
-    
+        return driverDAO.getAvailableDrivers();
     }
+
     // Update a driver
     public boolean updateDriver(Driver driver) {
         return driverDAO.updateDriver(driver);
@@ -43,14 +42,14 @@ public class DriverService {
     public Driver getDriverById(int driverId) {
         return driverDAO.getDriverById(driverId);
     }
+
     // Method to update driver status
     public boolean updateDriverStatus(int driverId, String status) {
         try {
-            return driverDAO.updateDriverStatus(driverId, status); // Return the result from DAO
+            return driverDAO.updateDriverStatus(driverId, status);
         } catch (SQLException e) {
             e.printStackTrace();
-            return false; // Return false only if an exception occurs
+            return false;
         }
     }
-
 }

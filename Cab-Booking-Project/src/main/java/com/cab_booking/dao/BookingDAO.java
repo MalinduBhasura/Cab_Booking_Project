@@ -1,8 +1,6 @@
 package com.cab_booking.dao;
 
 import com.cab_booking.model.Booking;
-import com.cab_booking.util.DatabaseConnection;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +9,12 @@ import java.util.concurrent.TimeUnit;
 public class BookingDAO {
     private Connection connection;
 
-    public BookingDAO() {
-        this.connection = DatabaseConnection.getInstance().getConnection();
+    public BookingDAO(Connection connection) {
+        this.connection = connection;
     }
 
     public int addBooking(Booking booking) throws SQLException {
-        String query = "INSERT INTO booking (customer_id, car_id, driver_id, start_date, end_date, car_type, fare, booking_type, estimated_km, total_days, total_amount, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO booking (customer_id, car_id, driver_id, start_date, end_date, car_type, fare, booking_type, estimated_km, total_days, total_amount, status, extra_charges) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, booking.getCustomerId());
             stmt.setInt(2, booking.getCarId());
@@ -30,7 +28,7 @@ public class BookingDAO {
             stmt.setInt(10, booking.getTotalDays());
             stmt.setDouble(11, booking.getTotalAmount());
             stmt.setString(12, "Active"); // Default status is Active
-           // stmt.setBoolean(12, false); // is_returned is set to FALSE by default
+            stmt.setDouble(13, booking.getExtraCharges()); // Extra charges
             stmt.executeUpdate();
 
             // Retrieve the generated booking ID
@@ -42,8 +40,10 @@ public class BookingDAO {
         }
         return -1; // Return -1 if the booking ID could not be retrieved
     }
-   
-    // Get all bookings for a customer (including returned bookings)
+    
+    
+    
+
     public List<Booking> getBookingsByCustomerId(int customerId) throws SQLException {
         List<Booking> bookings = new ArrayList<>();
         String query = "SELECT * FROM booking WHERE customer_id = ?";
@@ -70,6 +70,7 @@ public class BookingDAO {
         }
         return bookings;
     }
+
     public List<Booking> getAllBookings() throws SQLException {
         List<Booking> bookings = new ArrayList<>();
         String query = "SELECT * FROM booking";
@@ -90,12 +91,12 @@ public class BookingDAO {
                 booking.setTotalDays(rs.getInt("total_days"));
                 booking.setTotalAmount(rs.getDouble("total_amount"));
                 booking.setStatus(rs.getString("status")); // Fetch status
-                
                 bookings.add(booking);
             }
         }
         return bookings;
     }
+
     public void deleteBooking(int bookingId) throws SQLException {
         String query = "DELETE FROM booking WHERE booking_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -133,7 +134,6 @@ public class BookingDAO {
         }
     }
 
- // Get a booking by ID
     public Booking getBookingById(int bookingId) throws SQLException {
         String query = "SELECT * FROM booking WHERE booking_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -153,14 +153,14 @@ public class BookingDAO {
                 booking.setEstimatedKm(rs.getInt("estimated_km"));
                 booking.setTotalDays(rs.getInt("total_days"));
                 booking.setTotalAmount(rs.getDouble("total_amount"));
-                booking.setStatus(rs.getString("status")); // Add status
+                booking.setStatus(rs.getString("status"));
+                booking.setExtraCharges(rs.getDouble("extra_charges")); // Add extra charges
                 return booking;
             }
         }
         return null; // Return null if no booking is found
     }
-    
-    // Get active bookings for a customer
+
     public List<Booking> getActiveBookingsByCustomerId(int customerId) throws SQLException {
         List<Booking> bookings = new ArrayList<>();
         String query = "SELECT * FROM booking WHERE customer_id = ? AND status = 'Active'";
@@ -187,7 +187,7 @@ public class BookingDAO {
         }
         return bookings;
     }
-    // Mark a booking as returned
+
     public boolean markBookingAsReturned(int bookingId) throws SQLException {
         String query = "UPDATE booking SET status = 'Returned' WHERE booking_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -196,40 +196,54 @@ public class BookingDAO {
             return rowsUpdated > 0; // Return true if at least one row was updated
         }
     }
-    
-    public void calculateExtraCharges(int bookingId, Date returnDate) throws SQLException {
-        String query = "SELECT start_date, end_date, booking_type, fare, estimated_km, total_days, total_amount FROM booking WHERE booking_id = ?";
+
+    /**
+     * Calculates extra charges for a booking based on the return date and updates the total amount in the database.
+     *
+     * @param bookingId  The ID of the booking.
+     * @param returnDate The date the car was returned.
+     * @return The updated total amount including extra charges.
+     */
+    public double calculateExtraCharges(int bookingId, Date returnDate) throws SQLException {
+        String query = "SELECT end_date, fare, booking_type, total_amount FROM booking WHERE booking_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, bookingId);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                Date startDate = rs.getDate("start_date");
                 Date endDate = rs.getDate("end_date");
-                String bookingType = rs.getString("booking_type");
                 double fare = rs.getDouble("fare");
-                int estimatedKm = rs.getInt("estimated_km");
-                int totalDays = rs.getInt("total_days");
+                String bookingType = rs.getString("booking_type");
                 double totalAmount = rs.getDouble("total_amount");
 
+                // Calculate the difference between return date and end date
                 long diffInMillies = returnDate.getTime() - endDate.getTime();
                 long diffInDays = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
 
+                double extraCharges = 0;
+
                 if (diffInDays > 0) {
-                    if (bookingType.equals("Per KM")) {
+                    if (bookingType.equals("Per Day")) {
+                        // Calculate extra charges for Per Day bookings
+                        extraCharges = diffInDays * fare * 0.20; // 20% extra for each extra day
+                    } else if (bookingType.equals("Per KM")) {
+                        // Calculate extra charges for Per KM bookings
                         int extraKm = (int) (diffInDays * 100); // Assuming 100 km per extra day
-                        totalAmount += fare * extraKm * 0.20; // 20% extra for each extra KM
-                    } else if (bookingType.equals("Per Day")) {
-                        totalAmount += fare * diffInDays * 0.30; // 30% extra for each extra day
+                        extraCharges = fare * extraKm * 0.20; // 20% extra for each extra KM
                     }
                 }
 
+                // Update the total amount in the database
+                double updatedTotalAmount = totalAmount + extraCharges;
                 String updateQuery = "UPDATE booking SET total_amount = ? WHERE booking_id = ?";
                 try (PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
-                    updateStmt.setDouble(1, totalAmount);
+                    updateStmt.setDouble(1, updatedTotalAmount);
                     updateStmt.setInt(2, bookingId);
                     updateStmt.executeUpdate();
                 }
+
+                return updatedTotalAmount; // Return the updated total amount
             }
         }
+        return 0; // Return 0 if no booking is found
     }
-}
+}	

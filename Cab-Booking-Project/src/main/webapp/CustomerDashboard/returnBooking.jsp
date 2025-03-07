@@ -3,6 +3,7 @@
 <%@ page import="java.util.List" %>
 <%
     List<Booking> bookings = (List<Booking>) request.getAttribute("bookings");
+    String message = (String) request.getAttribute("message");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +16,14 @@
 <body>
     <div class="container mt-5">
         <h1 class="text-center mb-4">Return Booking</h1>
+
+        <!-- Display message -->
+        <% if (message != null) { %>
+            <div class="alert alert-info">
+                <%= message %>
+            </div>
+        <% } %>
+
         <table class="table table-bordered">
             <thead>
                 <tr>

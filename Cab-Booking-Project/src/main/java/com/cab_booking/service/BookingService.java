@@ -1,6 +1,7 @@
 package com.cab_booking.service;
 
 import com.cab_booking.dao.BookingDAO;
+import com.cab_booking.dao.DaoFactory;
 import com.cab_booking.model.Booking;
 
 import java.sql.Date;
@@ -12,7 +13,7 @@ public class BookingService {
     private BookingDAO bookingDAO;
 
     public BookingService() {
-        this.bookingDAO = new BookingDAO();
+        this.bookingDAO = DaoFactory.getBookingDao();
     }
 
     public int createBooking(Booking booking) {
@@ -40,6 +41,7 @@ public class BookingService {
             return null;
         }
     }
+
     public List<Booking> getAllBookings() {
         try {
             return bookingDAO.getAllBookings();
@@ -48,6 +50,7 @@ public class BookingService {
             return new ArrayList<>();
         }
     }
+
     public void deleteBooking(int bookingId) {
         try {
             bookingDAO.deleteBooking(bookingId);
@@ -55,7 +58,6 @@ public class BookingService {
             e.printStackTrace();
         }
     }
-    
 
     public int getNumberOfBookingsByCustomerId(int customerId) {
         try {
@@ -82,8 +84,7 @@ public class BookingService {
             return null; // Return null if an error occurs
         }
     }
-    
- // Mark a booking as returned
+
     public boolean markBookingAsReturned(int bookingId) {
         try {
             return bookingDAO.markBookingAsReturned(bookingId);
@@ -92,7 +93,7 @@ public class BookingService {
             return false;
         }
     }
- // Get active bookings for a customer
+
     public List<Booking> getActiveBookingsByCustomerId(int customerId) {
         try {
             return bookingDAO.getActiveBookingsByCustomerId(customerId);
@@ -101,12 +102,21 @@ public class BookingService {
             return null;
         }
     }
-    public void calculateExtraCharges(int bookingId, Date returnDate) {
+
+    /**
+     * Calculates extra charges for a booking based on the return date and updates the total amount in the database.
+     *
+     * @param bookingId  The ID of the booking.
+     * @param returnDate The date the car was returned.
+     * @return The updated total amount including extra charges.
+     */
+    public double calculateExtraCharges(int bookingId, Date returnDate) {
         try {
-            bookingDAO.calculateExtraCharges(bookingId, returnDate);
+            return bookingDAO.calculateExtraCharges(bookingId, returnDate);
         } catch (SQLException e) {
             e.printStackTrace();
+            return 0; // Return 0 if an error occurs
         }
     }
-    
+
 }

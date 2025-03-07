@@ -16,6 +16,16 @@ public class Booking {
     private int totalDays;
     private double totalAmount;
     private String status; // Changed to String to match ENUM in database
+    private double extraCharges; // New field for extra charges
+    
+ // Getters and Setters
+    public double getExtraCharges() {
+        return extraCharges;
+    }
+
+    public void setExtraCharges(double extraCharges) {
+        this.extraCharges = extraCharges;
+    }
 
     // Getters and Setters
     public int getBookingId() { return bookingId; }
