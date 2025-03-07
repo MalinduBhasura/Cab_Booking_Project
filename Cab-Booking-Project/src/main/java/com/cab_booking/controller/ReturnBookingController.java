@@ -41,7 +41,7 @@ public class ReturnBookingController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	// Get the booking ID from the request
+        // Get the booking ID from the request
         int bookingId = Integer.parseInt(request.getParameter("booking_id"));
         System.out.println("Returning booking with ID: " + bookingId); // Debug log
 
@@ -71,9 +71,6 @@ public class ReturnBookingController extends HttpServlet {
             message = "Thank you for returning the car on time! Your total amount is $" + booking.getTotalAmount() + ".";
         }
 
-        // Set the message in the request
-        request.setAttribute("message", message);
-
         // Mark the booking as returned
         boolean isBookingMarkedAsReturned = bookingService.markBookingAsReturned(bookingId);
         if (!isBookingMarkedAsReturned) {
@@ -92,8 +89,12 @@ public class ReturnBookingController extends HttpServlet {
             return;
         }
 
-        // Forward to the returnBooking.jsp page
-        request.getRequestDispatcher("/CustomerDashboard/returnBooking.jsp").forward(request, response);
+        // Set the message in the session
+        HttpSession session = request.getSession();
+        session.setAttribute("returnMessage", message);
+
+        // Redirect to the return confirmation page
+        response.sendRedirect(request.getContextPath() + "/CustomerDashboard/returnConfirmation.jsp");
     }
 
 }
