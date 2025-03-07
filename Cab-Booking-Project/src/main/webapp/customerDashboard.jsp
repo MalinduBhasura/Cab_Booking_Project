@@ -8,10 +8,7 @@
         return;
     }
 
-    String customerName = (String) session.getAttribute("customerName");
     List<Car> cars = (List<Car>) request.getAttribute("cars");
-    int numberOfBookings = (Integer) request.getAttribute("numberOfBookings");
-    boolean isEligibleForDiscount = numberOfBookings >= 3;
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,17 +17,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Customer Dashboard</title>
     <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome for Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <style>
         body {
-            background-color: #f8f9fa;
+            background: #f8f9fa;
             font-family: 'Arial', sans-serif;
         }
         .navbar {
-            background-color: #007bff;
+            background: #007bff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             padding: 10px 0;
         }
@@ -113,14 +110,6 @@
             border-color: #ffeeba;
             color: #856404;
         }
-        .discount-banner {
-            background-color: #28a745;
-            color: white;
-            padding: 10px;
-            text-align: center;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
     </style>
 </head>
 <body>
@@ -141,7 +130,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/customerDashboard">
                             <i class="fas fa-home"></i> Home
                         </a>
                     </li>
@@ -157,7 +146,7 @@
                     </li>
                     <!-- Logout Button -->
                     <li class="nav-item">
-                        <a class="nav-link logout-btn" href="logout">
+                        <a class="nav-link logout-btn" href="${pageContext.request.contextPath}/logout">
                             <i class="fas fa-sign-out-alt"></i> Logout
                         </a>
                     </li>
@@ -168,18 +157,7 @@
 
     <!-- Main Content -->
     <div class="container mt-5">
-        <!-- Welcome Message -->
-        <h1 class="text-center mb-4">Welcome, <%= customerName %>!</h1>
-
-        <!-- Discount Banner -->
-        <% if (isEligibleForDiscount) { %>
-            <div class="discount-banner">
-                <h5>🎉 You are eligible for a 30% discount on your next booking! 🎉</h5>
-            </div>
-        <% } %>
-
-        <!-- Available Cars -->
-        <h2 class="text-center mb-4">Available Cars</h2>
+        <h1 class="text-center mb-4">Available Cars</h1>
         <div class="row">
             <% if (cars != null && !cars.isEmpty()) {
                 for (Car car : cars) {
@@ -209,9 +187,12 @@
             </div>
             <% } %>
         </div>
+        <div class="text-center mt-3">
+            <a href="${pageContext.request.contextPath}/CustomerDashboard/bookingDetails" class="btn btn-secondary">Back to Admin Dashboard</a>
+        </div>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
