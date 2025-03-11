@@ -25,11 +25,10 @@ public class LoginServlet extends HttpServlet {
         boolean isAdmin = userService.authenticateAdmin(admin);
 
         if (isAdmin) {
-            // Create a session for the admin
             HttpSession session = request.getSession();
             session.setAttribute("user", admin);
-            session.setAttribute("userType", "admin"); // Set user type as admin
-            response.sendRedirect(request.getContextPath() + "/adminDashboard.jsp"); // Redirect to admin dashboard
+            session.setAttribute("userType", "admin");
+            response.sendRedirect(request.getContextPath() + "/adminDashboard.jsp");
         } else {
             // Check if it's a customer
             Customer authenticatedCustomer = userService.authenticateCustomer(username, password);

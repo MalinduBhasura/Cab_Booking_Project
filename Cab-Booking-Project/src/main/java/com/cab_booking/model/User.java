@@ -1,7 +1,5 @@
 package com.cab_booking.model;
 
-
-
 public abstract class User {
     private String username;
     private String password;

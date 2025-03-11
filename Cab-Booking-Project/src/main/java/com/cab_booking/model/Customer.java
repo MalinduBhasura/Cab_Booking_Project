@@ -1,29 +1,25 @@
 package com.cab_booking.model;
 
-public class Customer {
+public class Customer extends User {
     private int customerId;
     private String name;
     private String email;
     private String address;
     private String phone;
-    private String username;
-    private String password;
 
     // Constructor for login (only username and password)
     public Customer(String username, String password) {
-        this.username = username;
-        this.password = password;
+        super(username, password);
     }
 
     // Constructor for full details (used after fetching from the database)
     public Customer(int customerId, String name, String email, String address, String phone, String username, String password) {
+        super(username, password);
         this.customerId = customerId;
         this.name = name;
         this.email = email;
         this.address = address;
         this.phone = phone;
-        this.username = username;
-        this.password = password;
     }
 
     // Getters and Setters
@@ -65,21 +61,5 @@ public class Customer {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

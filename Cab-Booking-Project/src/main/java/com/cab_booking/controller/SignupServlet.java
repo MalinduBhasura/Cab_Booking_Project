@@ -27,10 +27,8 @@ public class SignupServlet extends HttpServlet {
         boolean isRegistered = userService.registerCustomer(customer);
 
         if (isRegistered) {
-            // Redirect to signup page with a success message
             response.sendRedirect("signup.jsp?success=true");
         } else {
-            // Redirect to signup page with an error message
             response.sendRedirect("signup.jsp?error=true");
         }
     }

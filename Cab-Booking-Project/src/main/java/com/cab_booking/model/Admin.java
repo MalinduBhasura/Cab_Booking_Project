@@ -1,26 +1,17 @@
 package com.cab_booking.model;
 
-
-public class Admin {
-    private String username;
-    private String password;
+public class Admin extends User {
     private int admin_id;
 
     public Admin(String username, String password) {
-        this.username = username;
-        this.password = password;
+        super(username, password);
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-    public int getadmin_id() {
+    public int getAdmin_id() {
         return admin_id;
     }
 
-	
+    public void setAdmin_id(int admin_id) {
+        this.admin_id = admin_id;
+    }
 }
