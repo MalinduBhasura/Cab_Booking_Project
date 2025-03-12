@@ -1,0 +1,106 @@
+/* Common Styles */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Poppins', sans-serif;
+}
+
+.sidebar {
+    height: 100vh;
+    background: #343a40;
+    color: white;
+    padding-top: 20px;
+    position: fixed;
+    width: 250px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.sidebar a:hover {
+    background: #495057;
+    transform: translateX(5px);
+}
+
+.sidebar a i {
+    font-size: 18px;
+}
+
+.content {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    background: white;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+    background: #007bff;
+    color: white;
+    border-radius: 15px 15px 0 0;
+    padding: 15px;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-body h4 {
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.card-body a {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.card-body a:hover {
+    background: #0056b3;
+}
+
+/* Gradient Backgrounds for Cards */
+.bg-gradient-success {
+    background: linear-gradient(135deg, #28a745, #00c851);
+}
+
+.bg-gradient-info {
+    background: linear-gradient(135deg, #17a2b8, #00bcd4);
+}
+
+.bg-gradient-warning {
+    background: linear-gradient(135deg, #ffc107, #ff9800);
+}

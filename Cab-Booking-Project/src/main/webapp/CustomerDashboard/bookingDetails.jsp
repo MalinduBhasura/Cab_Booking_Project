@@ -125,6 +125,11 @@ List<Booking> bookings = (List<Booking>) request.getAttribute("bookings");
                             <i class="fas fa-undo"></i> Return Booking
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/CustomerDashboard/userGuide.jsp">
+                            <i class="fas fa-undo"></i> User Guide
+                        </a>
+                    </li>
                     <!-- Logout Button -->
                     <li class="nav-item">
                         <a class="nav-link logout-btn" href="${pageContext.request.contextPath}/logout">

@@ -11,117 +11,66 @@
 <head>
     <title>Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Arial', sans-serif;
-        }
-        .sidebar {
-            height: 100vh;
-            background: #343a40;
-            color: white;
-            padding-top: 20px;
-            position: fixed;
-            width: 250px;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-        }
-        .sidebar a {
-            color: white;
-            text-decoration: none;
-            padding: 15px;
-            display: block;
-            font-size: 18px;
-            transition: background 0.3s;
-        }
-        .sidebar a:hover {
-            background: #495057;
-        }
-        .content {
-            margin-left: 260px;
-            padding: 20px;
-        }
-        .card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-        .card-header {
-            background: #007bff;
-            color: white;
-            border-radius: 15px 15px 0 0;
-        }
-        .btn-light {
-            background-color: #f8f9fa;
-            border: none;
-        }
-        .btn-light:hover {
-            background-color: #e2e6ea;
-        }
-    </style>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/admin.css" rel="stylesheet">
 </head>
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <h3 class="text-center">Mega City Cab</h3>
-        <a href="#">Dashboard</a>
-        <a href="car">Manage Cars</a>
-        <a href="/Cab-Booking-Project/AdminDashboard/driver">Manage Drivers</a>
-        <a href="/Cab-Booking-Project/AdminDashboard/view_booking.jsp">View All Booking</a>
-        <a href="logout">Logout</a>
+        <h3>Mega City Cab</h3>
+        <a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        <a href="car"><i class="fas fa-car"></i> Manage Cars</a>
+        <a href="/Cab-Booking-Project/AdminDashboard/driver"><i class="fas fa-users"></i> Manage Drivers</a>
+        <a href="/Cab-Booking-Project/AdminDashboard/view_booking.jsp"><i class="fas fa-list"></i> View Bookings</a>
+        <a href="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
 
     <!-- Content -->
     <div class="content">
-        <div class="container mt-4">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card shadow-sm">
-                        <div class="card-header">
-                            <h3 class="mb-0">Welcome, Admin!</h3>
-                        </div>
-                        <div class="card-body">
-                            <p><strong>Username:</strong> <%= admin.getUsername() %></p>
-                        </div>
+        <!-- Welcome Banner -->
+        <div class="welcome-banner">
+            <h1>Welcome, Admin!</h1>
+            <p>Manage your fleet and bookings efficiently with Mega City Cab.</p>
+        </div>
+
+        <!-- Cards Section -->
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card bg-gradient-success">
+                    <div class="card-body">
+                        <h4><i class="fas fa-car"></i> Manage Cars</h4>
+                        <p>View and manage all registered cars.</p>
+                        <a href="car" class="btn btn-light">View Cars</a>
                     </div>
                 </div>
             </div>
-            
-            <div class="row mt-4">
-                <div class="col-md-4">
-                    <div class="card text-white bg-success">
-                        <div class="card-body">
-                            
-                            <h4 class="card-text">Manage all registered cars.</h4>
-                            <a href="car" class="btn btn-light">View Cars</a>
-                        </div>
+            <div class="col-md-4 mb-4">
+                <div class="card bg-gradient-info">
+                    <div class="card-body">
+                        <h4><i class="fas fa-users"></i> Manage Drivers</h4>
+                        <p>View and manage all registered drivers.</p>
+                        <a href="/Cab-Booking-Project/AdminDashboard/driver" class="btn btn-light">View Drivers</a>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card text-white bg-info">
-                        <div class="card-body">
-                           
-                            <h4 class="card-text">Manage all drivers.</h4>
-                            <a href="/Cab-Booking-Project/AdminDashboard/driver" class="btn btn-light">View Drivers</a>
-                        </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card bg-gradient-warning">
+                    <div class="card-body">
+                        <h4><i class="fas fa-list"></i> View Bookings</h4>
+                        <p>View and manage all bookings.</p>
+                        <a href="/Cab-Booking-Project/AdminDashboard/view_booking.jsp" class="btn btn-light">View Bookings</a>
                     </div>
                 </div>
-     <div class="col-md-4">
-    <div class="card text-white bg-warning">
-        <div class="card-body">
-            <h4 class="card-text">View and manage bookings.</h4>
-            <a href="/Cab-Booking-Project/AdminDashboard/view_booking.jsp" class="btn btn-light">View Bookings</a>
-        </div>
-    </div>
-</div>
             </div>
         </div>
     </div>
 
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
