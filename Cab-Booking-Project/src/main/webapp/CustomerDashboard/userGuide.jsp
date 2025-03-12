@@ -12,6 +12,71 @@
     <style>
         body {
             background-color: #f8f9fa;
+        }
+        .navbar {
+            background-color: #007bff !important;
+            padding: 10px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff !important;
+        }
+        .navbar-brand:hover {
+            opacity: 0.8;
+        }
+        .nav-link {
+            color: #fff !important;
+            font-size: 1rem;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px; /* Space between icon and text */
+        }
+        .nav-link:hover {
+            color: #f8f9fa !important;
+            opacity: 0.8;
+            transform: translateY(-2px); /* Slight lift on hover */
+        }
+        .navbar-toggler {
+            border: none;
+        }
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+        }
+        .logout-btn {
+            background-color: #dc3545;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 20px;
+            color: #fff !important;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px; /* Space between icon and text */
+        }
+        .logout-btn:hover {
+            background-color: #c82333;
+            transform: translateY(-2px); /* Slight lift on hover */
+        }
+        .table-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .table th {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .table td, .table th {
+            vertical-align: middle;
+        }
+        body {
+            background-color: #f8f9fa;
             font-family: 'Arial', sans-serif;
         }
         .user-guide-container {
@@ -84,8 +149,58 @@
     </style>
 </head>
 <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <!-- Brand/Logo -->
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-car"></i> Car Booking
+            </a>
+
+            <!-- Toggle Button for Mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/customerDashboard">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/CustomerDashboard/bookingDetails">
+                            <i class="fas fa-list"></i> Booking Details
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/CustomerDashboard/returnBooking">
+                            <i class="fas fa-undo"></i> Return Booking
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/CustomerDashboard/userGuide.jsp">
+                            <i class="fas fa-book"></i> User Guide <!-- Updated icon -->
+                        </a>
+                    </li>
+                    <!-- Logout Button -->
+                    <li class="nav-item">
+                        <a class="nav-link logout-btn" href="${pageContext.request.contextPath}/logout">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- User Guide Content -->
     <div class="user-guide-container">
-        <h1>User Guide for Mega City Cab Booking System</h1>
+        <h1>
+            <i class="fas fa-book"></i> User Guide for Mega City Cab Booking System <!-- Added icon -->
+        </h1>
 
         <!-- Booking a Cab Section -->
         <h2>1. Booking a Cab</h2>

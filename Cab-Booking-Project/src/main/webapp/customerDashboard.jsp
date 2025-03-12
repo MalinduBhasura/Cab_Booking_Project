@@ -9,6 +9,13 @@
     }
 
     List<Car> cars = (List<Car>) request.getAttribute("cars");
+
+    // Handle null numberOfBookings
+    Integer numberOfBookings = (Integer) session.getAttribute("numberOfBookings");
+    if (numberOfBookings == null) {
+        numberOfBookings = 0; // Default to 0 if not set
+    }
+    boolean isEligibleForDiscount = numberOfBookings >= 3; // Check if eligible for discount
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -110,6 +117,40 @@
             border-color: #ffeeba;
             color: #856404;
         }
+        .welcome-section {
+            background: #007bff;
+            color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .discount-banner {
+            background: #28a745;
+            color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .user-guide-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .user-guide-section h3 {
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+        .user-guide-section ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+        .user-guide-section ul li {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -118,7 +159,7 @@
         <div class="container">
             <!-- Brand/Logo -->
             <a class="navbar-brand" href="#">
-                <i class="fas fa-car"></i> Car Booking
+                <i class="fas fa-car"></i> Mega City Cab Booking
             </a>
 
             <!-- Toggle Button for Mobile -->
@@ -162,6 +203,32 @@
 
     <!-- Main Content -->
     <div class="container mt-5">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h2>Welcome!</h2>
+            <p>Book your ride now and enjoy a seamless experience with Mega City Cab.</p>
+        </div>
+
+        <!-- Discount Banner -->
+        <% if (isEligibleForDiscount) { %>
+        <div class="discount-banner">
+            <h4>🎉 Special Offer! 🎉</h4>
+            <p>You are eligible for a <strong>30% discount</strong> on your next booking!</p>
+        </div>
+        <% } %>
+
+        <!-- User Guide Section -->
+        <div class="user-guide-section">
+            <h3>How to Book a Cab</h3>
+            <ul>
+                <li>Select a car from the list below.</li>
+                <li>Click on <strong>"Book Now"</strong> to proceed.</li>
+                <li>Fill in the booking details and confirm your ride.</li>
+                <li>Enjoy your trip with Mega City Cab!</li>
+            </ul>
+        </div>
+
+        <!-- Available Cars Section -->
         <h1 class="text-center mb-4">Available Cars</h1>
         <div class="row">
             <% if (cars != null && !cars.isEmpty()) {
@@ -192,9 +259,7 @@
             </div>
             <% } %>
         </div>
-        <div class="text-center mt-3">
-            <a href="${pageContext.request.contextPath}/CustomerDashboard/bookingDetails" class="btn btn-secondary">Back to Admin Dashboard</a>
-        </div>
+        
     </div>
 
     <!-- Bootstrap 5 JS -->

@@ -1,10 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.cab_booking.model.Driver, java.util.List" %>
 
-<%
-    List<Driver> drivers = (List<Driver>) request.getAttribute("drivers");
-%>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,81 +8,33 @@
     <title>Driver Management</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-     <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Arial', sans-serif;
-        }
-        .sidebar {
-            height: 100vh;
-            background: #343a40;
-            color: white;
-            padding-top: 20px;
-            position: fixed;
-            width: 250px;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-        }
-        .sidebar a {
-            color: white;
-            text-decoration: none;
-            padding: 15px;
-            display: block;
-            font-size: 18px;
-            transition: background 0.3s;
-        }
-        .sidebar a:hover {
-            background: #495057;
-        }
-        .content {
-            margin-left: 260px;
-            padding: 20px;
-        }
-        .card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-        .card-header {
-            background: #007bff;
-            color: white;
-            border-radius: 15px 15px 0 0;
-        }
-        .btn-light {
-            background-color: #f8f9fa;
-            border: none;
-        }
-        .btn-light:hover {
-            background-color: #e2e6ea;
-        }
-        .search-form {
-            margin-bottom: 20px;
-        }
-        .search-form input {
-            width: 200px;
-            display: inline-block;
-        }
-        .search-form button {
-            display: inline-block;
-        }
-    </style>
-    
+    <!-- Font Awesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/admin.css" rel="stylesheet">
 </head>
 <body>
-<!-- Sidebar -->
+    <!-- Sidebar -->
     <div class="sidebar">
         <h3 class="text-center">Mega City Cab</h3>
-        <a href="${pageContext.request.contextPath}/adminDashboard.jsp">Dashboard</a>
-        <a href="${pageContext.request.contextPath}/car">Manage Cars</a>
-        <a href="/Cab-Booking-Project/AdminDashboard/driver">Manage Drivers</a>
-        <a href="/Cab-Booking-Project/AdminDashboard/view_booking.jsp">View All Booking</a>
-        <a href="logout">Logout</a>
+        <a href="${pageContext.request.contextPath}/adminDashboard.jsp">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+        </a>
+        <a href="${pageContext.request.contextPath}/car">
+            <i class="fas fa-car"></i> Manage Cars
+        </a>
+        <a href="${pageContext.request.contextPath}/AdminDashboard/driver">
+            <i class="fas fa-users"></i> Manage Drivers
+        </a>
+        <a href="${pageContext.request.contextPath}/AdminDashboard/view_booking.jsp">
+            <i class="fas fa-list"></i> View Bookings
+        </a>
+        <a href="${pageContext.request.contextPath}/logout">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
     </div>
-     <!-- Content -->
+
+    <!-- Content -->
     <div class="content">
         <div class="container mt-4">
             <div class="row">
@@ -96,55 +44,59 @@
                             <h3 class="mb-0">Driver Management</h3>
                         </div>
                         <div class="card-body">
-                          
-
                             <!-- Bookings Table -->
                             <table class="table table-striped">
-            <thead >
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Phone</th>
-                            <th>Address</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% if (drivers != null && !drivers.isEmpty()) { %>
-                            <% for (Driver driver : drivers) { %>
-                                <tr>
-                                    <td><%= driver.getDriverId() %></td>
-                                    <td><%= driver.getDriverName() %></td>
-                                    <td><%= driver.getPhone() %></td>
-                                    <td><%= driver.getAddress() %></td>
-                                    <td>
-                                        <span class="badge <%= driver.getStatus().equals("available") ? "bg-success" : "bg-danger" %>">
-                                            <%= driver.getStatus() %>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <a href="driver?action=edit&driverId=<%= driver.getDriverId() %>" class="btn btn-warning btn-sm btn-action">Edit</a>
-                                        <a href="driver?action=delete&driverId=<%= driver.getDriverId() %>" class="btn btn-danger btn-sm btn-action">Delete</a>
-                                    </td>
-                                </tr>
-                            <% } %>
-                        <% } else { %>
-                            <tr>
-                                <td colspan="6" class="text-center">No drivers found.</td>
-                            </tr>
-                        <% } %>
-                    </tbody>
-                </table>
-                <div class="text-center">
-            <a href="driverAdd.jsp" class="btn btn-primary btn-add-car">Add Driver</a>
-        </div>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Phone</th>
+                                        <th>Address</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%
+                                    List<Driver> drivers = (List<Driver>) request.getAttribute("drivers");
+                                    if (drivers != null && !drivers.isEmpty()) {
+                                        for (Driver driver : drivers) {
+                                    %>
+                                    <tr>
+                                        <td><%= driver.getDriverId() %></td>
+                                        <td><%= driver.getDriverName() %></td>
+                                        <td><%= driver.getPhone() %></td>
+                                        <td><%= driver.getAddress() %></td>
+                                        <td>
+                                            <span class="badge <%= driver.getStatus().equals("available") ? "bg-success" : "bg-danger" %>">
+                                                <%= driver.getStatus() %>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a href="driver?action=edit&driverId=<%= driver.getDriverId() %>" class="btn btn-warning btn-sm btn-action">Edit</a>
+                                            <a href="driver?action=delete&driverId=<%= driver.getDriverId() %>" class="btn btn-danger btn-sm btn-action">Delete</a>
+                                        </td>
+                                    </tr>
+                                    <%
+                                        }
+                                    } else {
+                                    %>
+                                    <tr>
+                                        <td colspan="6" class="text-center">No drivers found.</td>
+                                    </tr>
+                                    <%
+                                    }
+                                    %>
+                                </tbody>
+                            </table>
+                            <div class="text-center">
+                                <a href="driverAdd.jsp" class="btn btn-primary btn-add-car">Add Driver</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        
-    </div>
-    </div>
-    </div>
     </div>
 
     <!-- Bootstrap JS -->
