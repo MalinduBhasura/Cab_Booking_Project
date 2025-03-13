@@ -74,6 +74,7 @@
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary">Add Car</button>
+                        <button type="reset" class="btn btn-warning mt-3 w-100">Clear</button>
                         <a href="car" class="btn btn-secondary mt-3 w-100">Back to Car Management</a>
                     </form>
                 </div>
